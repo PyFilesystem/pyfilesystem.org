@@ -1,6 +1,6 @@
 "path","md5","auth md5"
 "/__init__.py",e54925e1ed3818adfd6c00bffa62f89d,07f2dead3bac69c65db162b2f4aba71c
-"/lib.ini",ad05061182f0407d29c9d274e10ea5c1,f0151286e3f193818c8098d5433d21da
+"/lib.ini",7c5fde4e5c6ac6c1864737c79a7f2628,f4ca6b5579e2ed2910e5cce34fda541c
 "/locale/readme.txt",06c4fce01453459edb43d2857ebcc873,c44a09c4f28517782589988dd758c62e
 "/logic/admin.xml",c85cde7b5e8009295f8b42fd5e484b6d,3f76787dc70eee0217c5b9d2f85c9281
 "/logic/commands.xml",1934fc69f0c43f7d26074edfc9fc9adc,02e5ad55041fc69ecc12634b64ca0d34
@@ -13,7 +13,7 @@
 "/logic/signals.xml",581baac174bd64a76edba2644935ae7f,6aa8dd8878cf3ccdd80bc4da910ff308
 "/logic/tags.xml",4c0f6ff5c9da9c4f10506d161a9c6a29,4983c7e4f62521b8a2606750e57e409b
 "/logic/thumbs.xml",90d606b4589c9c7d5e7fa84f0ca56f0b,ff2653eeb6869f323a082c5c045c682f
-"/logic/views.xml",3fab7ea15dfea60df252b40b6e902119,d85d218a447f689f8d87aa90a0ff5f09
+"/logic/views.xml",82f27210c8a41df7b0a2d8202be5b8e0,ef0da9f3b81adcd4044cf9b8304c573d
 "/logic/widgets.xml",7862c2ede2c9ddf22f26c1f30a6e03ee,f10b552445043887b3946107d6ca0694
 "/media/css/draft.css",5054896d04be23035549306cacf59cdb,9e6e0f10b1784a30a113962cc1cb4fd5
 "/media/css/wiki.css",68da20f2cc4243722ebf1f3ee504debd,4483e5f3a2d7d3ac2f9754d2efebfa89

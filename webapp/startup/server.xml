@@ -51,7 +51,7 @@
 
         <install name="wiki" lib="moya.wiki" mount="/"/>
 
-        <install name="thumbnail" lib="moya.thumbnail" />
+        <install name="thumbnail" lib="moya.thumbnail"/>
         <install name="uploads" lib="moya.static" mount="/uploads/"/>
         <install name="imagelib" lib="moya.imagelib" mount="/imagelib/"/>
         <install name="widgetsextra" lib="moya.widgets.extra"/>

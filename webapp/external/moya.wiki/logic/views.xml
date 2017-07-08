@@ -51,7 +51,7 @@
         <db:query
             model="#Page"
             filter="#Page.current.content_text icontains q"
-            orderby="#Page.current.title"
+            orderby="#Page.title"
             dst="pages"/>
         <db:query
             model="#Tag"
