@@ -32,6 +32,22 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+
+    <style>
+
+
+#all {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+#content {
+  flex: 1;
+}
+
+</style>
+
     {% block "includecss" %}{% render include.css %}{% end %}
     {% block "css" %}{% render sections.css %}{% end %}
     {% block "jshead" %}{% render sections.jshead %}{% end %}
