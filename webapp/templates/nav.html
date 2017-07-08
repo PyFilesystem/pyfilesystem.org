@@ -17,9 +17,11 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
       <ul class="nav navbar-nav navbar-right">
-            <form class="navbar-form navbar-left">
+            <form action="{% url 'page_search' from 'wiki' %}" class="navbar-form navbar-left">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+
+            <input type="text" class="form-control" placeholder="Search" name="q">
+
         </div>
 
       </form>
