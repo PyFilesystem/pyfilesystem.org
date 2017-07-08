@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:forms="http://moyaproject.com/forms"
+      xmlns:html="http://moyaproject.com/html"
+      xmlns:w="http://moyaproject.com/widgets"
+      xmlns:img="http://moyaproject.com/imagelib"
+      xmlns:wiki="http://moyaproject.com/wiki">
+
+    <content libname="content.base" template="page.html">
+        <title>${revision.title}</title>
+        <include-js path="js/jsonrpc.js" from="moya.jsonrpc" />
+        <include-css path="css/wiki.css"/>
+        <section name="main">
+        </section>
+    </content>
+
+    <content libname="content.search" extends="#content.base">
+        <section name="main">
+            <w:paginate src="pages" dst="page">
+                <wiki:search-result page="page"/>
+            </w:paginate>
+        </section>
+        <section name="side">
+            <for src="tags" dst="tag">
+                <md>${tag.name}</md>
+            </for>
+        </section>
+    </content>
+
+    <content libname="content.tag" extends="#content.base">
+        <title>${tag.name}</title>
+        <section name="main">
+            <w:paginate src="pages" dst="page">
+                <wiki:search-result page="page"/>
+            </w:paginate>
+        </section>
+    </content>
+
+    <content libname="content.page" extends="#content.base">
+        <title>${revision.title}</title>
+        <section name="main">
+            <wiki:admin-panel if="page and revision.may_manage" page="page" revision="revision"/>
+            <w:warning if="revision.is_draft and revision.author==.user">
+                <md>
+This is a *draft*, and is only visible to Wiki managers.
+
+Use the admin panel to *publish* these changes.
+                </md>
+            </w:warning>
+            <wiki:revision page="page" revision="revision"/>
+        </section>
+    </content>
+
+    <content libname="content.front" extends="#content.base">
+        <title>Wiki</title>
+        <section name="main">
+            <md>
+# Welcome to your wiki!
+            </md>
+        </section>
+        <section name="side">
+            <render src="form"/>
+        </section>
+    </content>
+
+    <content libname="content.page.missing" extends="#content.base">
+        <title>Page Not Found</title>
+        <section name="main">
+            <get-url name="page_new" let:slug="slug" dst="url" query="title=title:slug"/>
+            <w:info>
+                <md>No page here. Would you like to [Create it](${url})?</md>
+            </w:info>
+        </section>
+    </content>
+
+    <content libname="content.page.form" extends="#content.base">
+        <section name="main">
+          <render src="form"/>
+        </section>
+    </content>
+
+    <content libname="content.page.new" extends="#content.page.form">
+        <title>New Page</title>
+    </content>
+
+    <content libname="content.page.create" extends="#content.page.form">
+        <title>Create ${page_url}</title>
+    </content>
+
+    <content libname="content.page.delete" extends="#content.page.form">
+        <title>Delete ${page_url}</title>
+    </content>
+
+    <content libname="content.page.publish" extends="#content.page.form">
+        <title>Publish ${page_url}</title>
+    </content>
+
+    <content libname="content.page.discard" extends="#content.page.form">
+        <title>Publish ${page_url}</title>
+    </content>
+
+    <content libname="content.page.reset" extends="#content.page.form">
+        <title>Reset Draft</title>
+    </content>
+
+    <content libname="content.page.default" extends="#content.page.form">
+        <title>Make ${revision.version} default</title>
+    </content>
+
+    <content libname="content.page.edit" extends="#content.base" template="editor.html">
+        <title>Edit ${revision.page.title}</title>
+        <include-css path="css/draft.css"/>
+        <include-js path="js/wiki.js"/>
+        <section name="main" merge="prepend">
+            <render src="form"/>
+        </section>
+    </content>
+
+</moya>

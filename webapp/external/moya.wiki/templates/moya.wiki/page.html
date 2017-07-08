@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block "body" %}
+<input type="hidden" name="wiki_rpc" value="{% url 'rpc' from 'moya.wiki' %}" />
+{%- if sections.side %}
+<div class="row">
+    <div class="col-md-3">
+    {% block "side" %}{% render sections.side %}{% end-block %}
+    </div>
+    <div class="col-md-9">
+    {% block "main" %}{% render sections.main %}{% end-block %}
+    </div>
+</div>
+{% else %}
+{% block "main" %}{% render sections.main %}{% end-block %}
+{% end-if %}
+{% endblock %}

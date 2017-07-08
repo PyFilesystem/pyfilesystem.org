@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:wiki="http://moyaproject.com/wiki"
+      xmlns:img="http://moyaproject.com/imagelib">
+    <!-- define your tags here -->
+
+    <tag name="create-page" synopsis="create a new wiki page">
+        <signature>
+            <attribute name="title" empty="no">Page title</attribute>
+            <attribute name="slug" empty="no">Page slug</attribute>
+        </signature>
+        <render-template
+            template="initial.md"
+            dst="initial_content"
+            let:title="title"/>
+        <db:get-or-create
+            model="#Page"
+            dst="page"
+            let:author=".user"
+            let:slug="slug"
+            initial="title=title">
+            <db:create
+                model="#Revision"
+                dst="revision"
+                let:published="yes"
+                let:markup=".app.settings.default_markup"
+                let:content="initial_content"
+                let:page="page"
+                let:version="0"
+                let:author=".user"
+                let:published_time=".now"
+                let:updated_time=".now"/>
+            <db:create
+                model="moya.imagelib#Collection"
+                dst="revision.images"/>
+            <let page.current="revision"/>
+        </db:get-or-create>
+        <return value="page"/>
+    </tag>
+
+    <tag name="create-draft" synopsis="create a new draft">
+        <signature>
+            <attribute name="page" missing="no">Page</attribute>
+            <attribute name="base" required="yes">Base Revision</attribute>
+        </signature>
+
+        <let base="page.current" if="not base"/>
+        <db:get-or-create
+            dst="revision"
+            model="#Revision"
+            initial="parent=base"
+            let:version="None"
+            let:page="page"
+            let:author=".user">
+            <img:clone-collection
+                collection="base.images"
+                dst="revision.images"
+                if="base"/>
+            <db:create
+                model="moya.imagelib#Collection"
+                dst="revision.images"
+                if="not revision.images"/>
+            <let
+                if="base"
+                revision.images.slug="page.slug"
+                revision.content="base.content"
+                revision.markup="base.markup"/>
+        </db:get-or-create>
+        <return value="revision"/>
+    </tag>
+
+    <tag name="publish" synopsis="publish draft">
+        <signature>
+            <attribute name="page" missing="no">Page</attribute>
+            <attribute name="revision" missing="no">Revision</attribute>
+        </signature>
+        <db:get
+            model="#Revision"
+            let:page="page"
+            let:published="yes"
+            orderby="-version"
+            dst="newest" />
+        <wiki:update-tags page="page" tags="revision.tagtext" />
+        <let
+            revision.version="(newest.version or 0) + 1"
+            revision.published="yes"
+            revision.published_time=".now"
+            revision.updated_time=".now"
+            page.current="revision"
+            page.updated_time=".now"
+            if="not revision.published"/>
+        <log-debug>Published ${page} r${revision.version}</log-debug>
+    </tag>
+
+    <tag name="update-tags">
+        <doc>
+            Update tags for a given page.
+        </doc>
+        <signature>
+            <attribute name="page" required="yes">Page object</attribute>
+            <attribute name="tags" required="no" default="None">Comma separated tags</attribute>
+        </signature>
+        <db:atomic>
+            <!-- Reduce the count for tags on the post -->
+            <db:update src="page.tags" let:count="#Tag.count - 1"/>
+            <!-- Re-add tags (if supplied) -->
+            <for src="stripall:commasplit:tags" dst="name" if="tags">
+                <db:get-or-create
+                    model="#Tag"
+                    dst="tag"
+                    let:slug="slug:name"
+                    initial="{'name': name}"/>
+                <append src="tag.pages" value="page"/>
+                <inc dst="tag.count"/>
+            </for>
+            <!-- Delete any tags with a zero count -->
+            <db:query model="#Tag" filter="#Tag.count lte 0" action="delete"/>
+        </db:atomic>
+    </tag>
+
+    <filter name="wikimarkup" value="markup">
+        <return>
+            <replace src="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
+                <let
+                    tokens="partition:[wikitag, ':']"
+                    wikitag="strip:first:tokens"
+                    islink="not bool:tokens.1"
+                    params="shlex:last:tokens"/>
+                <return>
+                    <render-template
+                        template="markup/wiki.html"
+                        let:wikitag="wikitag"
+                        let:islink="islink"
+                        let:params="params"/>
+                </return>
+            </replace>
+        </return>
+    </filter>
+
+</moya>

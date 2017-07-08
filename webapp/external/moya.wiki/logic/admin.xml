@@ -1,0 +1,49 @@
+<moya xmlns="http://moyaproject.com"
+      xmlns:m="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:auth="http://moyaproject.com/auth"
+      xmlns:admin="http://moyaproject.com/admin"
+      xmlns:html="http://moyaproject.com/html">
+
+
+    <admin:module xmlns="http://moyaproject.com/admin"
+        slug="moya-wiki" title="Wiki" description="Manage your Wiki">
+        <link to="#admintable.pages"/>
+        <link to="#admintable.revision"/>
+        <link to="#admintable.tags"/>
+    </admin:module>
+
+    <table xmlns="http://moyaproject.com/admin" libname="admintable.pages"
+        slug="pages" title="Pages" model="#Page"
+        search="#Page.title == q or #Page.title icontains q" >
+        <column title="Slug" link="yes" sort="title">${object.slug}</column>
+        <column title="Revision">${object.current.revision_label}</column>
+    </table>
+
+    <table xmlns="http://moyaproject.com/admin" libname="admintable.revision"
+        slug="revision" title="Revisions" model="#Revision"
+        search="#Revision.title icontains q">
+        <column title="Page" link="yes" sort="#Revision.version,#Revision.author.username">
+            ${object.revision_label} of '${object.page.title}'
+        </column>
+        <column title="Author"><m:render src="object.author"/></column>
+        <column title="Published?" sort="published">
+            <check ticked="object.published" />
+        </column>
+        <column title="Published Time" sort="published_time">
+            ${object.published_time ? localize:object.published_time: ''}
+        </column>
+        <column title="Updated Time" sort="updated_date">
+            ${object.updated_time ? localize:object.updated_time: ''}
+        </column>
+    </table>
+
+    <table xmlns="http://moyaproject.com/admin" libname="admintable.tags"
+        slug="tag" title="Tags" model="#Tag"
+        search="#Tag.name == q">
+        <column title="Name" link="yes" sort="name">${object.name}</column>
+        <column title="Count" sort="count">${object.count}</column>
+    </table>
+
+
+</moya>

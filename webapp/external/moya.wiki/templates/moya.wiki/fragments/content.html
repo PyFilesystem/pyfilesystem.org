@@ -1,0 +1,3 @@
+{% markup-block as 'moya' set page=page, revision=revision -%}
+{%- markup revision.content|'wikimarkup' as revision.markup -%}
+{%- end-markup-block %}

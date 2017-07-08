@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:w="http://moyaproject.com/widgets">
+
+    <widget name="admin-panel" template="widgets/admin-panel.html">
+        <signature>
+            <attribute name="page">Page object</attribute>
+            <attribute name="revision" default="None">Revision object</attribute>
+        </signature>
+        <let revisions="list:page.revisions"/>
+    </widget>
+
+    <widget name="revision" template="widgets/revision.html">
+        <signature>
+            <attribute name="page">Page object</attribute>
+            <attribute name="revision" default="None">Revision object</attribute>
+        </signature>
+        <let revision="page.current" if="not revision"/>
+    </widget>
+
+    <widget name="search-result" template="widgets/search_result.html">
+        <signature>
+            <attribute name="page">Page object</attribute>
+        </signature>
+    </widget>
+</moya>

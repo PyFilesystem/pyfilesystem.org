@@ -1,0 +1,21 @@
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db">
+
+    <markup-insert libname="insert.image" name="image">
+        <let slug="image"/>
+        <db:get
+            model="moya.imagelib#Image"
+            dst="image"
+            let:slug="slug"
+            let:collection="revision.images" />
+        <return>
+            <render-template
+                template="inserts/image.html"
+                let:image="image"
+                let:slug="slug"
+                let:params="commasplit:params"/>
+        </return>
+    </markup-insert>
+
+</moya>

@@ -1,0 +1,9 @@
+{% if islink -%}
+<a href="{% url 'page' with slug=slug:wikitag %}">${wikitag}</a>
+{% elif wikitag=='image' -%}
+{%- if params %}
+<moya insert="image" image="${first:params}" params="${commalist:params[1:]}"/>
+{%- else %}
+<div class="alert alert-warning">Missing name in [[image:]]</div>
+{%- endif %}
+{% endif -%}

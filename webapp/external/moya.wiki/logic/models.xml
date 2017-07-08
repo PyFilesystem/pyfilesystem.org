@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+    xmlns:let="http://moyaproject.com/let"
+    xmlns:m="http://moyaproject.com">
+
+    <model xmlns="http://moyaproject.com/db" libname="Page" repr="page '${slug}'">
+        <string name="title" length="100" null="no" />
+        <string name="slug" length="100" null="no" blank="no" index="yes"/>
+        <foreign-key name="current" model="#Revision" blank="yes" null="yes"
+            picker="#admintable.revision"/>
+        <datetime name="updated_time" auto="yes"/>
+        <foreign-key name="author" model="auth#User" null="no" picker="auth#admintable.users"/>
+        <boolean name="promoted" default="no"/>
+        <boolean name="locked" default="no"/>
+        <property name="url" expression=".appurls.page.page(slug=slug)"/>
+        <property name="edit_url" expression=".appurls.page.admin(slug=slug).page_edit"/>
+        <property name="publish_url" expression=".appurls.page.admin(slug=slug).page_publish"/>
+        <property name="count_images" expression="sumexp:[revisions,`len:images.images`]"/>
+    </model>
+
+    <model xmlns="http://moyaproject.com/db" libname="Revision" repr="revision '${page.slug}' ${revision_label}">
+        <foreign-key name="page" model="#Page" null="yes" backref="revisions" picker="#admintable.revision"/>
+        <foreign-key name="parent" model="#Revision" blank="yes" picker="#admintable.revision"/>
+        <string name="markup" length="20" default="markdown" />
+        <text name="content" null="no" default="" />
+        <text name="content_text" label="Content as text" null="yes" />
+        <datetime name="published_time" null="yes" />
+        <datetime name="updated_time" null="yes" />
+        <integer name="version" null="yes" blank="yes" default="None" />
+        <boolean name="published" default="no"/>
+        <foreign-key name="author" model="auth#User" null="no" picker="auth#admintable.users"/>
+        <text name="tagtext" null="no" default="" />
+        <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
+            picker="moya.imagelib#admintable.collections"/>
+        <property name="is_draft" expression="isnone:version"/>
+        <property name="revision_label" expression="is_draft ? sub:'${author.username}’s draft' : sub:'r${version}'"/>
+        <property name="url">
+            <do xmlns="http://moyaproject.com" if="object.page.slug">
+                <let slug="object.page.slug"/>
+                <return if="object.page.current==object">
+                    <get-url name="page" let:slug="slug"/>
+                </return>
+                <return if="object.is_draft">
+                    <get-url name="page_draft" let:slug="slug" let:username="object.author.username"/>
+                </return>
+                <return>
+                    <get-url name="page_version" let:slug="slug" let:version="object.version"/>
+                </return>
+            </do>
+        </property>
+        <property name="is_default" expression="page.current.id==id"/>
+        <property name="title">
+            <m:return value="object.revision_label" if="object.is_draft"/>
+            <m:return value="object.page.title"/>
+        </property>
+
+        <property name="may_manage" expression="permission:.app.settings.manage_permission"/>
+        <property name="may_edit" expression="permission:.app.settings.edit_permission"/>
+        <property name="may_delete" expression="permission:.app.settings.delete_permission"/>
+
+        <text name="comment" default=""/>
+    </model>
+
+    <model xmlns="http://moyaproject.com/db" libname="Tag" repr="${name}">
+        <string name="name" length="100" null="no" />
+        <string name="slug" length="100" null="no" />
+        <integer name="count" null="no" default="0" />
+        <many-to-many model="#Page" name="pages" backref="tags" picker="#admintable.pages" backpicker="#admintable.tags"/>
+    </model>
+
+</moya>

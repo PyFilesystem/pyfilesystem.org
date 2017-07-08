@@ -1,0 +1,49 @@
+
+<p>
+  <div class="btn-toolbar">
+
+    <div class="btn-group">
+
+      <select onchange="window.location.href=this.value" class="form-control">
+      {#- Drafts first, sorted alphabetically, then descending order of version -#}
+      {%- for r in sortedby:[revisions, `[not isnone:version, -(version or 0), author.username]`] %}
+        <option{% attrib value=r.url, selected=r==revision ? "selected" : None %}>
+          ${r.revision_label}
+          {%- if r.comment %}&nbsp;&ndash; {% summarize chars 24 mark '&hellip;' %}${r.comment}{% end %}{% endif -%}
+          {%- if r==page.current %}*{% endif -%}
+        </option>
+      {%- endfor %}
+      </select>
+    </div>
+
+    <div class="btn-group">
+    {% with editclass=revision.may_edit ? None : 'disabled' -%}
+      {%- if revision.is_draft %}
+      <a {% attrib class=[editclass, 'btn btn-success'] %} href="{% url 'page_publish' with slug=page.slug %}">
+        <i class="glyphicon glyphicon-thumbs-up"></i> Publish
+      </a>
+      {%- endif %}
+      <a {% attrib class=[editclass, 'btn btn-primary'] %} href="{% url 'page_edit' with slug=page.slug %}">
+        <i class="glyphicon glyphicon-pencil"></i> Edit
+      </a>
+      </div>
+
+      <div class="btn-group">
+      {%- if not revision.is_draft and not revision.is_default %}
+      <a {% attrib class=[editclass, 'btn btn-default'] %} href="{% url 'page_default' with slug=page.slug, version=revision.version %}">
+         <i class="glyphicon glyphicon-ok"></i> Make Default
+      </a>
+      {%- end %}
+    {% endwith -%}
+    </div>
+
+    <div class="btn-group">
+      <a {% attrib class=[revision.may_delete ? None : 'disabled', 'btn btn-warning'] %} href="{% url 'page_delete' with slug=page.slug %}">
+       <i class="glyphicon glyphicon-remove"></i> Delete
+    </a>
+      <a {% attrib class=[permission:.app.settings.create_permission ? None : 'disabled', 'btn btn-warning'] %} href="{% url 'page_new' %}">
+        <i class="glyphicon glyphicon-plus"></i> New
+      </a>
+    </div>
+  </div>
+</p>

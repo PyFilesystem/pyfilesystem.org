@@ -1,0 +1,7 @@
+<p>
+<strong><a href="{% url 'page' with slug=page.slug %}">${page.current.title}</a></strong>
+<br>
+{% summarize %}
+{% with revision=page.current %}{% include "fragments/content.html" %}{% endwith %}
+{% end %}
+</p>

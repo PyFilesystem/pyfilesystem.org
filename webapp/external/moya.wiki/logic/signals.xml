@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+    xmlns:let="http://moyaproject.com/let"
+    xmlns:db="http://moyaproject.com/db">
+
+    <handle signal="db.pre-update" sender="#Page">
+        <let
+            page="signal.data.object"
+            page.updated_time=".now"/>
+        <log-debug>${page} was updated</log-debug>
+    </handle>
+
+    <handle signal="db.pre-update,db.pre-insert" sender="#Revision">
+        <let
+            revision="signal.data.object"
+            revision.updated_time=".now"
+            revision.page.updated_time=".now"/>
+        <process-markup
+            src="revision.content"
+            type="${revision.markup}"
+            dst="html"/>
+        <let revision.content_text="striptags:html"/>
+        <log-debug>${revision} was updated</log-debug>
+    </handle>
+
+</moya>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:forms="http://moyaproject.com/forms"
+      xmlns:wiki="http://moyaproject.com/wiki">
+
+    <mountpoint name="main">
+        <!-- A simple default view to start you off -->
+        <url route="/" view="#view.page" name="page_front"/>
+        <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
+        <url route="/new" view="#view.page.new" name="page_new"/>
+        <url route="/search" view="#view.search" name="page_search"/>
+        <url route="/tag/{slug:tag}/" view="#view.tag" name="page_tag"/>
+        <url route="/page/" mount="#mountpoint.page" name="page"/>
+    </mountpoint>
+
+    <mountpoint libname="mountpoint.page">
+        <url route="/{slug:slug}/" view="#view.page" name="page"/>
+        <url route="/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
+        <url route="/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
+        <url route="/{slug:slug}/" mount="#mountpoint.page.actions" name="admin">
+            <forbidden if="not permission:.app.settings.edit_permission"/>
+        </url>
+        <url route="/{slug:slug}.{integer:version}/" mount="#mountpoint.revision.actions">
+            <forbidden if="not permission:.app.settings.edit_permission"/>
+        </url>
+    </mountpoint>
+
+    <mountpoint libname="mountpoint.revision.actions">
+        <url route="/make-default" view="#view.page.default" name="page_default"/>
+    </mountpoint>
+
+    <mountpoint libname="mountpoint.page.actions">
+        <url route="/edit" view="#view.page.edit" name="page_edit"/>
+        <url route="/delete" view="#view.page.delete" name="page_delete"/>
+        <url route="/publish" view="#view.page.publish" name="page_publish"/>
+        <url route="/discard" view="#view.page.discard" name="page_discard"/>
+        <url route="/reset" view="#view.page.reset" name="page_reset"/>
+    </mountpoint>
+
+    <view libname="view.front" content="#content.front">
+        <redirect
+            if=".request.GET.new"
+            name="page_edit"
+            let:slug="slug:.request.GET.new"/>
+    </view>
+
+    <view libname="view.search" content="#content.search">
+        <let q=".request.GET.q"/>
+        <db:query
+            model="#Page"
+            filter="#Page.current.content_text icontains q"
+            orderby="#Page.current.title"
+            dst="pages"/>
+        <db:query
+            model="#Tag"
+            filter="#Tag.name ilike q"
+            dst="tags"/>
+    </view>
+
+    <view libname="view.tag" content="#content.tag">
+        <db:get-required
+            model="#Tag"
+            let:slug=".url.tag"
+            dst="tag"/>
+        <db:query
+            model="#Page"
+            src="tag.pages"
+            orderby="title"
+            dst="pages"/>
+    </view>
+
+    <view libname="view.page" content="#content.page">
+        <let slug=".url.slug or .app.settings.default_page"/>
+        <db:get
+            model="#Page"
+            let:slug="slug"
+            dst="page"/>
+
+        <let revision="page.current"/>
+        <if test="'version' in .url">
+            <db:get-required
+                model="#Revision"
+                src="page.revisions"
+                dst="revision"
+                let:page="page"
+                let:version=".url.version"/>
+            <redirect name="page" let:slug="slug" if="page.current==revision"/>
+        </if>
+        <elif test="'username' in .url and .user">
+            <db:get-required
+                model="#Revision"
+                src="page.revisions"
+                dst="revision"
+                filter="#Revision.author.username==.url.username"
+                let:page="page"
+                let:version="None"/>
+        </elif>
+        <serve-content
+            if="not revision"
+            content="#content.page.missing"
+            status="NOT_FOUND"
+            let:slug="slug"/>
+    </view>
+
+    <view libname="view.page.new" content="#content.page.new" requires="permission:.app.settings.create_permission">
+        <forms:get form="#form.page.new" let:title=".request.GET.title or ''" dst="form"/>
+        <forms:validate src="form">
+            <let title="strip:form.data.title"/>
+            <wiki:create-page
+                dst="page"
+                title="title"
+                slug="slug:title"/>
+            <redirect name="page_edit" let:slug="page.slug"/>
+        </forms:validate>
+    </view>
+
+    <view libname="view.page.edit" content="#content.page.edit">
+        <db:get model="#Page" let:slug=".url.slug" dst="page"/>
+        <redirect name="page_create" let:slug=".url.slug" if="not page"/>
+        <wiki:create-draft page="page" base="page.current" dst="revision"/>
+        <forms:get
+            form="#form.page.edit"
+            src="revision"
+            dst="form"
+            let:page="page"
+            let:revision="revision"/>
+        <forms:validate src="form">
+            <forms:apply src="form" dst="revision"/>
+            <switch on="form.data.action">
+                <case>publish</case>
+                <redirect name="page_publish" let:slug="page.slug"/>
+
+                <case>save</case>
+                <redirect-to url="${revision.url}"/>
+
+                <case>discard</case>
+                <redirect name="page_discard" let:slug="page.slug"/>
+
+                <case>reset</case>
+                <redirect name="page_reset" let:slug="page.slug"/>
+
+                <default-case/>
+                <redirect name="page_edit" let:slug="page.slug"/>
+            </switch>
+        </forms:validate>
+    </view>
+
+
+    <view libname="view.page.delete" content="#content.page.delete" requires="permission:.app.settings.delete_permission">
+        <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
+        <forms:get
+            form="#form.page.delete"
+            dst="form"
+            let:page="page"/>
+        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
+        <forms:validate src="form">
+            <db:delete src="page"/>
+            <redirect name="page_front"/>
+        </forms:validate>
+    </view>
+
+    <macro docname="get_draft">
+        <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
+        <db:get-required model="#Revision" let:page="page" let:version="None" dst="revision"/>
+        <get-url name="page" let:slug=".url.slug" dst="page_url"/>
+    </macro>
+
+    <view libname="view.page.publish" content="#content.page.publish">
+        <defer to="get_draft"/>
+        <forms:get form="#form.page.publish" dst="form"
+            let:page="page" let:revision="revision" let:page_url="page_url"/>
+        <forms:validate src="form">
+            <let publish="form.data.publish=='yes'"/>
+            <redirect name="page_edit" let:slug="page.slug" if="not publish"/>
+            <let revision.comment="form.data.comment"/>
+            <wiki:publish page="page" revision="revision"/>
+            <redirect-to url="${revision.url}"/>
+        </forms:validate>
+    </view>
+
+    <view libname="view.page.discard" content="#content.page.discard">
+        <defer to="get_draft"/>
+        <forms:get form="#form.page.discard" dst="form"
+            let:page="page" let:revision="revision" let:page_url="page_url"/>
+        <forms:validate src="form">
+            <let discard="form.data.discard=='yes'"/>
+            <redirect name="page_edit" let:slug="page.slug" if="not discard"/>
+            <db:delete src="revision"/>
+            <redirect name="page" let:slug=".url.slug"/>
+        </forms:validate>
+    </view>
+
+    <view libname="view.page.reset" content="#content.page.reset">
+        <defer to="get_draft"/>
+        <forms:get form="#form.page.reset" dst="form"
+            let:page="page" let:revision="revision" let:page_url="page_url"/>
+        <forms:validate src="form">
+            <let reset="form.data.reset=='yes'"/>
+            <redirect name="page_edit" let:slug="page.slug" if="not reset"/>
+            <db:get-required
+                model="#Revision"
+                dst="base"
+                let:page="page"
+                let:version="form.data.version"
+                />
+            <db:delete src="revision"/>
+            <wiki:create-draft page="page" base="base" dst="revision"/>
+            <redirect name="page_edit" let:slug=".url.slug"/>
+        </forms:validate>
+    </view>
+
+    <view libname="view.page.default" content="#content.page.default">
+        <db:get-required
+            model="#Page"
+            let:slug=".url.slug"
+            dst="page"/>
+        <db:get-required
+            model="#Revision"
+            src="page.revisions"
+            dst="revision"
+            if="'version' in .url"
+            let:page="page"
+            let:version="int:.url.version"/>
+        <wiki:update-tags page="page" tags="revision.tagtext" />
+        <forms:get form="#form.page.default" dst="form"
+            let:page="page" let:revision="revision"/>
+        <forms:validate src="form">
+            <let default="form.data.default=='yes'"/>
+            <redirect
+                if="not default"
+                name="page_version"
+                let:slug=".url.slug"
+                let:version=".url.version"/>
+            <let page.current="revision"/>
+            <redirect
+                name="page_version"
+                let:slug=".url.slug"
+                let:version=".url.version"/>
+        </forms:validate>
+    </view>
+</moya>

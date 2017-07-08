@@ -1,0 +1,28 @@
+#markup-tabs a[href='#markup-tabs-markup'] .glyphicon
+{
+    opacity:0.7;
+}
+
+textarea[name=content]
+{
+     height:calc(100vh - 148px);
+}
+
+.moya-wiki-preview
+{
+    height:calc(100vh - 148px);
+    overflow:auto;
+}
+
+
+.moya-imglib-manager
+{
+    min-height:calc(100vh - 148px);
+}
+
+.wiki-settings
+{
+    height:calc(100vh - 148px);
+    overflow-y:auto;
+    overflow-x:hidden;
+}

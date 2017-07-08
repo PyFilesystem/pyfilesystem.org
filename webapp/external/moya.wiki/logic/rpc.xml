@@ -1,0 +1,73 @@
+<!--
+Create a JSONRPC interface which you can see on /jsonrpc/
+-->
+<moya xmlns="http://moyaproject.com"
+      xmlns:rpc="http://moyaproject.com/jsonrpc"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:forms="http://moyaproject.com/forms"
+      xmlns:tn="http://moyaproject.com/thumbnail"
+      xmlns:wiki="http://moyaproject.com/wiki">
+
+    <!-- Use an enumeration so you can refer to error codes by a label -->
+    <enum libname="enum.jsonrpc.errors">
+        <value id="1" name="no_collection">No such image collection</value>
+        <value name="markup_not_supported">This markup is not supported</value>
+        <value name="no_draft">Draft could not be found</value>
+        <value name="no_permission">No permission to edit draft</value>
+    </enum>
+
+    <!-- This object creates a view that exposes methods via JSON RPC -->
+    <rpc:interface libname="jsonrpc.interface" errors="#enum.jsonrpc.errors">
+
+        <rpc:method name="render_images" description="Render images for insertion">
+            <rpc:parameter name="collection_uuid" type="string">UUID of collection</rpc:parameter>
+            <rpc:parameter name="images" type="list">List of Image UUIDs</rpc:parameter>.
+
+            <db:get model="moya.imagelib#Collection" let:uuid="collection_uuid" dst="collection"/>
+            <rpc:error code="no_collection" if="not collection"/>
+
+            <db:query model="moya.imagelib#Image" dst="images"
+                let:collection="collection" filter="moya.imagelib#Image.uuid in images"/>
+            <return-dict>
+                <render-template template="rpc/images.html" let:images="images" dst="html"/>
+            </return-dict>
+        </rpc:method>
+
+        <rpc:method name="preview_content" description="Preview content from a post">
+            <rpc:parameter name="revision_id" type="number">ID of revision</rpc:parameter>
+            <db:get model="#Revision" let:id="revision_id" dst="revision" />
+            <return-dict>
+                <render-template
+                    template="rpc/preview.html"
+                    dst="html"
+                    let:page="revision.page"
+                    let:revision="revision"/>
+            </return-dict>
+        </rpc:method>
+
+        <rpc:method name="save_draft" description="Save a draft post">
+            <rpc:parameter name="revision_id">ID of post</rpc:parameter>
+            <rpc:parameter name="draft">Object containing draft data</rpc:parameter>
+            <rpc:parameter name="count" type="number" default="0">Draft save count</rpc:parameter>
+
+            <db:get model="#Revision" let:id="revision_id" dst="revision"/>
+            <rpc:error code="no_draft" if="not revision or not revision.is_draft"/>
+            <rpc:error code="no_permission" if="not revision.is_draft and revision.author != .user"/>
+
+            <for src="['markup', 'content', 'tagtext']" dst="field">
+                <set-item src="revision" index="field" value="draft[field]"/>
+            </for>
+            <return-dict let:status="'success'" let:count="count">
+                <render-template
+                    template="rpc/preview.html"
+                    dst="html"
+                    let:page="revision.page"
+                    let:revision="revision"/>
+            </return-dict>
+
+        </rpc:method>
+
+    </rpc:interface>
+
+</moya>

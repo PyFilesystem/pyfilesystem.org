@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moya xmlns="http://moyaproject.com"
+    xmlns:m="http://moyaproject.com"
+    xmlns:img="http://moyaproject.com/imagelib"
+    xmlns:w="http://moyaproject.com/widgets"
+    xmlns:html="http://moyaproject.com/html"
+    xmlns:let="http://moyaproject.com/let"
+    xmlns:db="http://moyaproject.com/db">
+
+    <form id="wiki" libname="form.page.edit" style="basic" xmlns="http://moyaproject.com/forms">
+        <m:get-markup-choices dst="markups" />
+        <hidden-input name="revision_id" initial="revision.id" />
+        <hidden-input name="page_id" initial="page.id"/>
+        <hidden-input name="wiki_rpc" initial=".appurls.rpc"/>
+        <field>
+            <w:tab-panel id="markup-tabs">
+                <w:tab title="Edit" id="markup">
+                    <text-area name="content" label="Content" libname="form.post.editor"/>
+                </w:tab>
+                <w:tab title="Images">
+                    <img:manager collection="revision.images" picker="yes" picker_text="Insert image" on_pick="on_pick_post_images"/>
+                </w:tab>
+                <w:tab title="Settings">
+                    <html:div class="wiki-settings">
+                        <group style="horizontal">
+                            <input label="Tags" name="tagtext" maxlength="200" required="no" placeholder="comma separated tags"/>
+                            <select label="Markup Type" choices="markups" name="markup" initial=".app.settings.default_markup"/>
+                        </group>
+                    </html:div>
+                </w:tab>
+                <w:tab title="Preview">
+                    <html:div class="moya-wiki-preview">
+                        <w:info>Content will be previewed here...</w:info>
+                    </html:div>
+                </w:tab>
+            </w:tab-panel>
+        </field>
+        <field>
+            <actions>
+                <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
+                <submit-button visual="warning" name="action" clicked="discard" text="Discard"/>
+                <submit-button visual="warning" name="action" clicked="reset" text="Reset"/>
+                <w:button-link target="_blank" visual="default" name="page_draft" let:username=".user.username" let:slug="page.slug">View</w:button-link>
+            </actions>
+        </field>
+    </form>
+
+    <form legend="New Wiki Page" libname="form.page.new" style="horizontal" xmlns="http://moyaproject.com/forms">
+        <input label="Title" maxlength="100" name="title" initial="title" required="yes"
+            help="The title will be used to generate a unique URL"/>
+        <actions>
+            <submit-button visual="success" name="action" clicked="new" text="Create New Page"/>
+        </actions>
+        <validate-field field="title">
+            <fail if="not slug:strip:value">
+                Title must contain alphanumeric characters.
+            </fail>
+            <db:if-exists model="#Page" let:slug="slug:strip:value">
+                <fail>A page with this title already exists.</fail>
+            </db:if-exists>
+        </validate-field>
+    </form>
+
+    <form libname="form.page.delete" style="basic" xmlns="http://moyaproject.com/forms">
+        <m:md>
+            ### Delete ${page.url} ?
+        </m:md>
+        <w:warning>
+            <m:md>
+                Deleting this page will **permanently** remove **${len:page.revisions}** revisions and **${page.count_images}** images.
+            </m:md>
+        </w:warning>
+        <checkbox name="confirm" required="yes" text="I understand"/>
+        <actions>
+            <submit-button visual="danger" text="Delete" />
+            <w:button-link visual="default" name="page" let:slug="page.slug">Cancel</w:button-link>
+        </actions>
+    </form>
+
+    <form libname="form.page.publish" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:md>
+            <html:p>
+                <input maxlength="100" name="comment" placeholder="Revision comment"/>
+            </html:p>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="publish" clicked="yes" text="Publish Page"/>
+                <submit-button visual="default" name="publish" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+    <form libname="form.page.discard" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>Are you sure you want to *discard* draft wiki page **${.url.slug}**?</m:md>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="discard" clicked="yes" text="Discard Draft"/>
+                <submit-button visual="default" name="discard" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+    <form libname="form.page.reset" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>
+                Are you sure you want to *reset* draft wiki page?
+
+                Changes will be lost and content will be copied from the following revision:
+            </m:md>
+            <html:p>
+                <select name="version" initial="revision.parent.version">
+                    <m:for src="rsortedby:[page.revisions, `version`]" dst="r" filter="not r.is_draft">
+                        <option value="${r.version}">${r.revision_label} ${r.comment}</option>
+                    </m:for>
+                </select>
+            </html:p>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="reset" clicked="yes" text="Reset Draft"/>
+                <submit-button visual="default" name="reset" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+    <form libname="form.page.default" xmlns="http://moyaproject.com/forms">
+        <w:dialog>
+            <m:md>
+                Are you sure you want to make revision **${revision.version}** the default page?
+            </m:md>
+            <w:dialog-buttons>
+                <submit-button visual="primary" name="default" clicked="yes" text="Make Default"/>
+                <submit-button visual="default" name="default" clicked="no" text="Cancel"/>
+            </w:dialog-buttons>
+        </w:dialog>
+    </form>
+
+</moya>

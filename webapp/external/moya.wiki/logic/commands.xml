@@ -1,0 +1,24 @@
+<moya xmlns="http://moyaproject.com"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:let="http://moyaproject.com/let"
+      xmlns:auth="http://moyaproject.com/auth">
+
+    <command libname="cmd.init" synopsis="initialize wiki" init="yes">
+        <json dst="perms">
+        [
+            ["wiki-manage", "User may manage the Wiki"],
+            ["wiki-create", "User may create Wiki pages"],
+            ["wiki-edit", "User may edit Wiki pages"],
+            ["wiki-delete", "User may delete Wiki pages"]
+        ]
+        </json>
+        <for src="perms" dst="name, description">
+            <auth:new-permission
+                dst="perm"
+                name="${name}"
+                description="${description}"/>
+            <echo>${perm} created</echo>
+        </for>
+    </command>
+
+</moya>
