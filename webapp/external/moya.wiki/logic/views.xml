@@ -50,8 +50,8 @@
         <let q=".request.GET.q"/>
         <db:query
             model="#Page"
-            filter="#Page.current.content_text icontains q"
-            orderby="#Page.title"
+            filter="#Page.searchable and #Page.current.content_text icontains q"
+            orderby="#Page.title like q, #Page.title"
             dst="pages"/>
         <db:query
             model="#Tag"
@@ -88,7 +88,9 @@
                 let:version=".url.version"/>
             <redirect name="page" let:slug="slug" if="page.current==revision"/>
         </if>
-        <elif test="'username' in .url and .user">
+        <elif test="'username' in .url">
+            <!-- Drafts are only visible to Wiki managers -->
+            <not-found if="not permission:.app.settings.manage_permission"/>
             <db:get-required
                 model="#Revision"
                 src="page.revisions"

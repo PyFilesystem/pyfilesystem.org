@@ -18,6 +18,7 @@
 
     <content libname="content.search" extends="#content.base">
         <section name="main">
+            <scope-node template="search/header.html"/>
             <w:paginate src="pages" dst="page">
                 <wiki:search-result page="page"/>
             </w:paginate>

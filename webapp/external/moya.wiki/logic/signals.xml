@@ -19,7 +19,7 @@
             src="revision.content"
             type="${revision.markup}"
             dst="html"/>
-        <let revision.content_text="striptags:html"/>
+        <let revision.content_text="page.title + '\n' + striptags:html"/>
         <log-debug>${revision} was updated</log-debug>
     </handle>
 

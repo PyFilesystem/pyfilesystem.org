@@ -7,7 +7,7 @@
     <meta name="googlebot" content="index,follow,snippet,archive">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Universal - All In 1 Template</title>
+    <title>${title}</title>
 
     <meta name="keywords" content="">
 
@@ -34,19 +34,16 @@
 
 
     <style>
+        #all {
+          display: flex;
+          min-height: 100vh;
+          flex-direction: column;
+        }
 
-
-#all {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
-#content {
-  flex: 1;
-}
-
-</style>
+        #content {
+          flex: 1;
+        }
+    </style>
 
     {% block "includecss" %}{% render include.css %}{% end %}
     {% block "css" %}{% render sections.css %}{% end %}
@@ -59,43 +56,19 @@
 
 
     <div id="all">
-    <header>
-{% include "/nav.html" %}
-    </header>
-
-        <!-- *** LOGIN MODAL ***
-}
-_________________________________________________________ -->
-
+        <header>
+        {% include "/nav.html" %}
+        </header>
 
         <div id="content">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-2">
-
-                    </div>
-                    <div class="col-md-8">
-                        <section>
-
-        {%- block "body" %}
-        {% render sections.body %}
-        {%- end %}
-                        <!-- /.row -->
-                        </section>
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-                </div>
+            {%- block "body" %}
+            {% render sections.body %}
+            {%- end %}
             </div>
-            <!-- /.container -->
         </div>
-        <!-- /#content -->
 
-
-    {% include "/footer.html" %}
-
-
+        {% include "/footer.html" %}
 
     </div>
     <!-- /#all -->

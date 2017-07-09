@@ -10,6 +10,7 @@
             picker="#admintable.revision"/>
         <datetime name="updated_time" auto="yes"/>
         <foreign-key name="author" model="auth#User" null="no" picker="auth#admintable.users"/>
+        <boolean name="searchable" default="yes" />
         <boolean name="promoted" default="no"/>
         <boolean name="locked" default="no"/>
         <property name="url" expression=".appurls.page.page(slug=slug)"/>
