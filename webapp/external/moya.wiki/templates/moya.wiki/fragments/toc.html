@@ -1,0 +1,22 @@
+{%- def "render_toc" %}
+<ul{% if level==1 %} class="list list-unstyled"{% endif %}>
+{%- for node in nodes %}
+<li>
+    {% if node.title %}<a href="#toc-${slug:node.title}">${node.title}</a>{% endif %}
+    {%- if node.children %}{% call "render_toc" with nodes=node.children, level=level+1 %}{% endif %}
+</li>
+{%- endfor %}
+</ul>
+{%- end-def %}
+{%- with toc=len:toc == 1 ? toc.0.children : toc %}
+{% if toc %}
+<div class="panel panel-info pull-right">
+    <div class="panel-heading">
+    In this page
+    </div>
+    <div class="panel-body">
+        {% call "render_toc" with nodes=toc, level=1 %}
+    </div>
+</div>
+{%- end-if %}
+{%- end-with %}
