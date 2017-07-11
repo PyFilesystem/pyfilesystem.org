@@ -6,7 +6,8 @@
       xmlns:html="http://moyaproject.com/html"
       xmlns:w="http://moyaproject.com/widgets"
       xmlns:img="http://moyaproject.com/imagelib"
-      xmlns:wiki="http://moyaproject.com/wiki">
+      xmlns:wiki="http://moyaproject.com/wiki"
+      xmlns:soup="http://moyaproject.com/soup">
 
     <content libname="content.base" template="page.html">
         <title>${revision.title}</title>
@@ -41,6 +42,14 @@
 
     <content libname="content.page" extends="#content.base">
         <title>${revision.title}</title>
+        <render-template
+            dst="revision_html"
+            template="fragments/content.html"
+            let:revision="revision"/>
+        <soup:extract-toc
+            src="revision_html"
+            dst="toc"/>
+
         <section name="main">
             <wiki:admin-panel if="page and revision.may_manage" page="page" revision="revision"/>
             <w:warning if="revision.is_draft and revision.author==.user">
@@ -50,7 +59,8 @@ This is a *draft*, and is only visible to Wiki managers.
 Use the admin panel to *publish* these changes.
                 </md>
             </w:warning>
-            <wiki:revision page="page" revision="revision"/>
+            <node template="fragments/toc.html" let:toc="toc"/>
+            <render src="revision_html"/>
         </section>
     </content>
 

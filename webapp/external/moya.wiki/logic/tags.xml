@@ -3,7 +3,8 @@
       xmlns:let="http://moyaproject.com/let"
       xmlns:db="http://moyaproject.com/db"
       xmlns:wiki="http://moyaproject.com/wiki"
-      xmlns:img="http://moyaproject.com/imagelib">
+      xmlns:img="http://moyaproject.com/imagelib"
+      xmlns:soup="http://moyaproject.com/soup">
     <!-- define your tags here -->
 
     <tag name="create-page" synopsis="create a new wiki page">
@@ -121,21 +122,26 @@
     </tag>
 
     <filter name="wikimarkup" value="markup">
+        <replace src="markup" dst="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
+            <let
+                tokens="partition:[wikitag, ':']"
+                wikitag="strip:first:tokens"
+                islink="not bool:tokens.1"
+                params="shlex:last:tokens"/>
+            <return>
+                <render-template
+                    template="markup/wiki.html"
+                    let:wikitag="wikitag"
+                    let:islink="islink"
+                    let:params="params"/>
+            </return>
+        </replace>
+        <return value="markup"/>
+    </filter>
+
+    <filter name="headingids" value="html">
         <return>
-            <replace src="markup" regex="\[\[(?P&lt;wikitag&gt;.*?)\]\]">
-                <let
-                    tokens="partition:[wikitag, ':']"
-                    wikitag="strip:first:tokens"
-                    islink="not bool:tokens.1"
-                    params="shlex:last:tokens"/>
-                <return>
-                    <render-template
-                        template="markup/wiki.html"
-                        let:wikitag="wikitag"
-                        let:islink="islink"
-                        let:params="params"/>
-                </return>
-            </replace>
+            <soup:add-id-to-headings src="html" prefix="toc-"/>
         </return>
     </filter>
 

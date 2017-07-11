@@ -12,12 +12,11 @@
         <let revisions="list:page.revisions"/>
     </widget>
 
-    <widget name="revision" template="widgets/revision.html">
+    <widget name="content" template="widgets/revision.html">
         <signature>
-            <attribute name="page">Page object</attribute>
             <attribute name="revision" default="None">Revision object</attribute>
         </signature>
-        <let revision="page.current" if="not revision"/>
+        <let page="revision.page"/>
     </widget>
 
     <widget name="search-result" template="widgets/search_result.html">

@@ -60,6 +60,7 @@
         <property name="may_delete" expression="permission:.app.settings.delete_permission"/>
 
         <text name="comment" default=""/>
+
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Tag" repr="${name}">

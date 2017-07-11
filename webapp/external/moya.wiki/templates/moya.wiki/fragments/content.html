@@ -1,3 +1,5 @@
-{% markup-block as 'moya' set page=page, revision=revision -%}
+{% extract replace html:(contents|'headingids') %}
+{% markup-block as 'moya' set page=revision.page, revision=revision -%}
 {%- markup revision.content|'wikimarkup' as revision.markup -%}
 {%- end-markup-block %}
+{% end-extract %}
