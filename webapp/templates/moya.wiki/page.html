@@ -3,43 +3,30 @@
 {% block "body" %}
 <input type="hidden" name="wiki_rpc" value="{% url 'rpc' from 'moya.wiki' %}" />
 <div class="row">
+{#
     <div class="col-md-2">
     {% include "/sidebar.html" %}
     {% block "side" %}{% render sections.side %}{% end-block %}
     </div>
-    <div class="col-md-7">
-    <h1>${revision.title}</h1>
+#}
+    <div class="col-md-10 col-md-offset-1">
+
+
+    <div class="heading">
+    <p class="text-muted text-uppercase mb-small text-right">By ${revision.author.display_name} | ${localize:revision.published_time.date}</p>
+        <h1>${revision.title}</h1>
+    </div>
+
     {% block "main" %}{% render sections.main %}{% end-block %}
     </div>
-    <div class="col-md-3">
-    <div class="panel panel-default sidebar-menu">
+    <div class="col-md-1">
 
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Search</h3>
-                            </div>
-
-                            <div class="panel-body">
-                                <form role="search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search">
-                                        <span class="input-group-btn">
-
-            <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
-
-        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
+        {#
         <div class="panel panel-info sidebar-menu">
-            <div class="panel-heading">
-            <h3 class="panel-title">Wiki Page</h3>
-            </div>
             <div class="panel-body">
-                <dl class="dl-horizontal">
+                <dl>
                     <dt>Author</dt>
-                    <dd>${revision.author.username}</dd>
+                    <dd>${revision.author.display_name}</dd>
                     <dt>Published</dt>
                     <dd>${localize:revision.published_time.date}</dd>
                     <dt>Revision</dt>
@@ -47,6 +34,27 @@
                 </dl>
             </div>
         </div>
+        #}
+
+        {#
+        <div class="panel panel-info sidebar-menu">
+            <div class="panel-heading">
+                <h3 class"panel-title">Tags</h3>
+            </div>
+            <div class="panel-body">
+                <ul class="tag-cloud">
+                {%- for tag in page.tags %}
+                    <li>
+                        <a href="{% url 'page_tag' with tag=tag.slug %}">
+                            <i class="fa fa-tag"></i> ${tag.name}
+                        </a>
+                    </li>
+                {%- end-for %}
+                </ul>
+            </div>
+        </div>
+        #}
     </div>
+
 </div>
 {% endblock %}

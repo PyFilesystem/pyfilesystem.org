@@ -48,30 +48,15 @@
       <ul class="nav navbar-right">
           <form action="{% url 'page_search' from 'wiki' %}" class="navbar-form navbar-left">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Search" name="q">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
             </div>
           </form>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-
-<div id="heading-breadcrumbs">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-7">
-                        <h1>Webdesign now</h1>
-                    </div>
-                    <div class="col-md-5">
-                        <ul class="breadcrumb">
-                            <li><a href="index.html">Home</a>
-                            </li>
-                            <li><a href="blog.html">Blog</a>
-                            </li>
-                            <li>Blog post</li>
-                        </ul>
-
-                    </div>
-                </div>
-            </div>
-        </div>
