@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% def "render_tags" %}
+    {% if tags %}
+    <ul>
+    {%- for tag in tags %}
+        <li><a href="{% url 'page_tag' with tag=tag.slug %}">${tag.name}</a></li>
+    {%- end-for %}
+    </ul>
+    {% endif %}
+{% end-def %}
+
 {% block "body" %}
 <input type="hidden" name="wiki_rpc" value="{% url 'rpc' from 'moya.wiki' %}" />
 {%- if sections.side %}
@@ -9,9 +19,11 @@
     </div>
     <div class="col-md-9">
     {% block "main" %}{% render sections.main %}{% end-block %}
+    {% call "render_tags" %}
     </div>
 </div>
 {% else %}
 {% block "main" %}{% render sections.main %}{% end-block %}
+{% call "render_tags" %}
 {% end-if %}
 {% endblock %}

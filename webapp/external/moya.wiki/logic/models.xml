@@ -68,6 +68,7 @@
         <string name="slug" length="100" null="no" />
         <integer name="count" null="no" default="0" />
         <many-to-many model="#Page" name="pages" backref="tags" picker="#admintable.pages" backpicker="#admintable.tags"/>
+        <text name="description" null="no" default="" />
     </model>
 
 </moya>

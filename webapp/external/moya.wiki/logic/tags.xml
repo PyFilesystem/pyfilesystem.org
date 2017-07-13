@@ -67,7 +67,8 @@
                 if="base"
                 revision.images.slug="page.slug"
                 revision.content="base.content"
-                revision.markup="base.markup"/>
+                revision.markup="base.markup"
+                revision.tagtext="base.tagtext"/>
         </db:get-or-create>
         <return value="revision"/>
     </tag>
@@ -116,8 +117,7 @@
                 <append src="tag.pages" value="page"/>
                 <inc dst="tag.count"/>
             </for>
-            <!-- Delete any tags with a zero count -->
-            <db:query model="#Tag" filter="#Tag.count lte 0" action="delete"/>
+            <db:query model="#Tag" filter="#Tag.count lt 0" action="delete"/>
         </db:atomic>
     </tag>
 

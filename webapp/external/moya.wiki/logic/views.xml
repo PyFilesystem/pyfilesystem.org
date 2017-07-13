@@ -39,15 +39,8 @@
         <url route="/reset" view="#view.page.reset" name="page_reset"/>
     </mountpoint>
 
-    <view libname="view.front" content="#content.front">
-        <redirect
-            if=".request.GET.new"
-            name="page_edit"
-            let:slug="slug:.request.GET.new"/>
-    </view>
-
     <view libname="view.search" content="#content.search">
-        <let q=".request.GET.q"/>
+        <let q=".request.GET.q or ''"/>
         <db:query
             model="#Page"
             filter="#Page.searchable and #Page.current.content_text icontains q"
@@ -104,6 +97,12 @@
             content="#content.page.missing"
             status="NOT_FOUND"
             let:slug="slug"/>
+        <db:query
+            model="#Tag"
+            src="page.tags"
+            dst="tags"
+            filter="#Tag.count gt 0"
+            orderby="#Tag.name"/>
     </view>
 
     <view libname="view.page.new" content="#content.page.new" requires="permission:.app.settings.create_permission">

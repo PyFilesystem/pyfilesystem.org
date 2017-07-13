@@ -9,7 +9,7 @@
       xmlns:wiki="http://moyaproject.com/wiki"
       xmlns:soup="http://moyaproject.com/soup">
 
-    <content libname="content.base" template="page.html">
+    <content libname="content.base" template="base.html">
         <title>${revision.title}</title>
         <include-js path="js/jsonrpc.js" from="moya.jsonrpc" />
         <include-css path="css/wiki.css"/>
@@ -24,23 +24,19 @@
                 <wiki:search-result page="page"/>
             </w:paginate>
         </section>
-        <section name="side">
-            <for src="tags" dst="tag">
-                <md>${tag.name}</md>
-            </for>
-        </section>
     </content>
 
     <content libname="content.tag" extends="#content.base">
         <title>${tag.name}</title>
         <section name="main">
+            <scope-node template="tag/header.html"/>
             <w:paginate src="pages" dst="page">
                 <wiki:search-result page="page"/>
             </w:paginate>
         </section>
     </content>
 
-    <content libname="content.page" extends="#content.base">
+    <content libname="content.page" extends="#content.base" template="page.html">
         <title>${revision.title}</title>
         <render-template
             dst="revision_html"
@@ -61,18 +57,6 @@ Use the admin panel to *publish* these changes.
             </w:warning>
             <node template="fragments/toc.html" let:toc="toc"/>
             <render src="revision_html"/>
-        </section>
-    </content>
-
-    <content libname="content.front" extends="#content.base">
-        <title>Wiki</title>
-        <section name="main">
-            <md>
-# Welcome to your wiki!
-            </md>
-        </section>
-        <section name="side">
-            <render src="form"/>
         </section>
     </content>
 

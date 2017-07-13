@@ -9,51 +9,43 @@
     {% block "side" %}{% render sections.side %}{% end-block %}
     </div>
 #}
-    <div class="col-md-10 col-md-offset-1">
+    <div class="col-md-9">
 
 
     <div class="heading">
-    <p class="text-muted text-uppercase mb-small text-right">By ${revision.author.display_name} | ${localize:revision.published_time.date}</p>
+    {# <p class="text-muted text-uppercase mb-small pull-right">By ${revision.author.display_name} | ${localize:revision.published_time.date}</p> #}
         <h1>${revision.title}</h1>
     </div>
 
     {% block "main" %}{% render sections.main %}{% end-block %}
     </div>
-    <div class="col-md-1">
+    <div class="col-md-3">
 
-        {#
-        <div class="panel panel-info sidebar-menu">
-            <div class="panel-body">
-                <dl>
-                    <dt>Author</dt>
-                    <dd>${revision.author.display_name}</dd>
-                    <dt>Published</dt>
-                    <dd>${localize:revision.published_time.date}</dd>
-                    <dt>Revision</dt>
-                    <dd>${revision.version}</dd>
-                </dl>
-            </div>
+        {% if tags %}
+        <div class="list-group tag-list">
+        {% for tag in tags %}
+            <a href="{% url 'page_tag' with tag=tag.slug %}" class="list-group-item">
+                <h4 class="list-group-item-heading"><i class="fa fa-tag"></i> ${tag.name}</h4>
+                {%- if tag.description %}
+                {% markup tag.description as 'markdown' %}
+                {%- end-if %}
+            </a>
+        {% end-for %}
         </div>
-        #}
+        {% end-if %}
 
-        {#
-        <div class="panel panel-info sidebar-menu">
-            <div class="panel-heading">
-                <h3 class"panel-title">Tags</h3>
-            </div>
-            <div class="panel-body">
-                <ul class="tag-cloud">
-                {%- for tag in page.tags %}
-                    <li>
-                        <a href="{% url 'page_tag' with tag=tag.slug %}">
-                            <i class="fa fa-tag"></i> ${tag.name}
-                        </a>
-                    </li>
-                {%- end-for %}
-                </ul>
-            </div>
+        <div class="list-group">
+            <dl class="list-group-item">
+                <dt>Author</dt>
+                <dd>${revision.author.display_name}</dd>
+                <dt>Published</dt>
+                <dd>${localize:revision.published_time.date}</dd>
+                <dt>Revision</dt>
+                <dd>${revision.version}</dd>
+            </dl>
         </div>
-        #}
+
+
     </div>
 
 </div>
