@@ -15,3 +15,4 @@ build/
 *.sqllite
 local.ini
 pg.ini
+*.DS_Store

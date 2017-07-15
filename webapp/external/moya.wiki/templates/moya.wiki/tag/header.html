@@ -1,0 +1,3 @@
+{%- with count=pages.count %}
+<p class="lead">{% trans number count %}${count} page{% plural %}${count} pages{% end %} tagged with <em>'${tag.name}'</em></p>
+{%- end-with %}

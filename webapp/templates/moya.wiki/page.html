@@ -3,36 +3,48 @@
 {% block "body" %}
 <input type="hidden" name="wiki_rpc" value="{% url 'rpc' from 'moya.wiki' %}" />
 <div class="row">
-{#
-    <div class="col-md-2">
-    {% include "/sidebar.html" %}
-    {% block "side" %}{% render sections.side %}{% end-block %}
-    </div>
-#}
+
     <div class="col-md-9">
-
-
-    <div class="heading">
-    {# <p class="text-muted text-uppercase mb-small pull-right">By ${revision.author.display_name} | ${localize:revision.published_time.date}</p> #}
-        <h1>${revision.title}</h1>
+        <a href="/" class="visible-xs visible-sm" style="width:100%;max-width:400px;margin:auto;display:block;padding:20px 0px;">
+            {% insert 'img/logo.svg' fs 'media' %}
+        </a>
+        <div class="heading">
+            <h1>${revision.title}</h1>
+        </div>
+        <article>
+        {% block "main" %}{% render sections.main %}{% end-block %}
+        </article>
     </div>
 
-    {% block "main" %}{% render sections.main %}{% end-block %}
-    </div>
     <div class="col-md-3">
 
-        {% if tags %}
+      <a href="/" class="hidden-xs hidden-sm" style="width:100%;margin:auto;padding:20px 0px;">
+       {% insert 'img/logo.svg' fs 'media' %}
+      </a>
+
+      <form action="{% url 'page_search' from 'wiki' %}">
+        <div class="form-group">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="q">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+      </form>
+
+        {%- if tags %}
         <div class="list-group tag-list">
-        {% for tag in tags %}
+        {%- for tag in tags %}
             <a href="{% url 'page_tag' with tag=tag.slug %}" class="list-group-item">
                 <h4 class="list-group-item-heading"><i class="fa fa-tag"></i> ${tag.name}</h4>
                 {%- if tag.description %}
                 {% markup tag.description as 'markdown' %}
                 {%- end-if %}
             </a>
-        {% end-for %}
+        {%- end-for %}
         </div>
-        {% end-if %}
+        {%- end-if %}
 
         <div class="list-group">
             <dl class="list-group-item">
@@ -44,7 +56,6 @@
                 <dd>${revision.version}</dd>
             </dl>
         </div>
-
 
     </div>
 

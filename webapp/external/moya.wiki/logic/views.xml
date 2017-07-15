@@ -20,10 +20,10 @@
         <url route="/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
         <url route="/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
         <url route="/{slug:slug}/" mount="#mountpoint.page.actions" name="admin">
-            <forbidden if="not permission:.app.settings.edit_permission"/>
+            <forbidden if="not eval:.app.settings.edit_permission"/>
         </url>
         <url route="/{slug:slug}.{integer:version}/" mount="#mountpoint.revision.actions">
-            <forbidden if="not permission:.app.settings.edit_permission"/>
+            <forbidden if="not eval:.app.settings.edit_permission"/>
         </url>
     </mountpoint>
 
@@ -83,7 +83,7 @@
         </if>
         <elif test="'username' in .url">
             <!-- Drafts are only visible to Wiki managers -->
-            <not-found if="not permission:.app.settings.manage_permission"/>
+            <not-found if="not eval:.app.settings.manage_permission"/>
             <db:get-required
                 model="#Revision"
                 src="page.revisions"
@@ -105,7 +105,7 @@
             orderby="#Tag.name"/>
     </view>
 
-    <view libname="view.page.new" content="#content.page.new" requires="permission:.app.settings.create_permission">
+    <view libname="view.page.new" content="#content.page.new" requires="eval:.app.settings.create_permission">
         <forms:get form="#form.page.new" let:title=".request.GET.title or ''" dst="form"/>
         <forms:validate src="form">
             <let title="strip:form.data.title"/>
@@ -148,8 +148,7 @@
         </forms:validate>
     </view>
 
-
-    <view libname="view.page.delete" content="#content.page.delete" requires="permission:.app.settings.delete_permission">
+    <view libname="view.page.delete" content="#content.page.delete" requires="eval:.app.settings.delete_permission">
         <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
         <forms:get
             form="#form.page.delete"
@@ -204,8 +203,7 @@
                 model="#Revision"
                 dst="base"
                 let:page="page"
-                let:version="form.data.version"
-                />
+                let:version="form.data.version"/>
             <db:delete src="revision"/>
             <wiki:create-draft page="page" base="base" dst="revision"/>
             <redirect name="page_edit" let:slug=".url.slug"/>

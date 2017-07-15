@@ -25,6 +25,7 @@
         <string name="markup" length="20" default="markdown" />
         <text name="content" null="no" default="" />
         <text name="content_text" label="Content as text" null="yes" />
+        <string name="page_style" length="100" null="yes"/>
         <datetime name="published_time" null="yes" />
         <datetime name="updated_time" null="yes" />
         <integer name="version" null="yes" blank="yes" default="None" />
@@ -55,9 +56,9 @@
             <m:return value="object.page.title"/>
         </property>
 
-        <property name="may_manage" expression="permission:.app.settings.manage_permission"/>
-        <property name="may_edit" expression="permission:.app.settings.edit_permission"/>
-        <property name="may_delete" expression="permission:.app.settings.delete_permission"/>
+        <property name="may_manage" expression="eval:.app.settings.manage_permission"/>
+        <property name="may_edit" expression="eval:.app.settings.edit_permission"/>
+        <property name="may_delete" expression="eval:.app.settings.delete_permission"/>
 
         <text name="comment" default=""/>
 

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
     <!-- Css animations  -->
-    <link href="{% media '/universal/css/animate.css' %}" rel="stylesheet">
+    <!-- <link href="{% media '/universal/css/animate.css' %}" rel="stylesheet"> -->
 
     <!-- Theme stylesheet, if possible do not edit this stylesheet -->
     <link href="{% media '/universal/css/style.default.css' %}" rel="stylesheet" id="theme-stylesheet">
@@ -42,7 +42,7 @@
 
         #content {
           flex: 1;
-          padding-top:60px;
+          padding-top:15px;
           padding-bottom:60px;
         }
 
@@ -64,12 +64,19 @@
             margin-bottom:10px;
         }
 
+        article
+        {
+            margin-bottom:2em;
+        }
+
     </style>
 
     {% block "includecss" %}{% render include.css %}{% end %}
     {% block "css" %}{% render sections.css %}{% end %}
     {% block "jshead" %}{% render sections.jshead %}{% end %}
     {% block "head" %}{% render sections.head %}{% end %}
+
+    {% include "/fragments/favicon.html" %}
 
 </head>
 
@@ -83,6 +90,13 @@
 
         <div id="content">
             <div class="container">
+
+            {%- if form %}
+            <a href="/" style="width:200px;margin:auto;display:block;padding:20px 0px;">
+                {% insert 'img/logo.svg' fs 'media' %}
+            </a>
+            {%- endif %}
+
             {%- block "body" %}
             {% render sections.body %}
             {%- end %}

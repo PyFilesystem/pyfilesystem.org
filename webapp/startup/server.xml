@@ -13,7 +13,6 @@
         <import py="moya.libs.session"/>
         <import py="moya.libs.admin"/>
         <import py="moya.libs.static"/>
-        <import py="moya.libs.favicon"/>
         <import py="moya.libs.links"/>
         <import py="moya.libs.bootstrap"/>
         <import py="moya.libs.forms"/>
@@ -41,7 +40,6 @@
         <install name="diagnostics" lib="moya.diagnostics" if="not .debug"/>
         <install name="bootstrap" lib="moya.twitter.bootstrap"/>
         <install name="links" lib="moya.links"/>
-        <install name="favicon" lib="moya.favicon" mount="/"/>
 
         <install name="feedback" lib="moya.feedback" mount="/feedback/"/>
         <install name="jsonrpc" lib="moya.jsonrpc"/>

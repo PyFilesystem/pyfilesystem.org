@@ -17,7 +17,8 @@
         </section>
     </content>
 
-    <content libname="content.search" extends="#content.base">
+    <content libname="content.search" extends="#content.base" template="search.html">
+        <title>Search</title>
         <section name="main">
             <scope-node template="search/header.html"/>
             <w:paginate src="pages" dst="page">
@@ -26,7 +27,7 @@
         </section>
     </content>
 
-    <content libname="content.tag" extends="#content.base">
+    <content libname="content.tag" extends="#content.search">
         <title>${tag.name}</title>
         <section name="main">
             <scope-node template="tag/header.html"/>
@@ -70,7 +71,7 @@ Use the admin panel to *publish* these changes.
         </section>
     </content>
 
-    <content libname="content.page.form" extends="#content.base">
+    <content libname="content.page.form" extends="#content.base" template="form.html">
         <section name="main">
           <render src="form"/>
         </section>
