@@ -5,10 +5,22 @@
 <div class="row">
 
     <div class="col-md-9">
-        <a href="/" class="visible-xs visible-sm" style="width:100%;max-width:200px;margin:auto;display:block;padding:20px 0px;">
-            {% insert 'img/logo.svg' fs 'media' %}
-        </a>
-        <div class="heading">
+        <div class="visible-xs visible-sm" style="width:100%;height:45px;">
+
+            <form action="{% url 'page_search' from 'wiki' %}"  style="float:right;width:220px;">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search site" name="q">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </div>
+          </form>
+
+        </div>
+
+        <div class="heading clear-both">
             <h1>${revision.title}</h1>
         </div>
         <article>
@@ -22,7 +34,7 @@
        {% insert 'img/logo.svg' fs 'media' %}
       </a>
 
-      <form action="{% url 'page_search' from 'wiki' %}">
+      <form action="{% url 'page_search' from 'wiki' %}" style="padding-top:1em;">
         <div class="form-group">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search" name="q">
@@ -37,7 +49,7 @@
         <div class="list-group tag-list">
         {%- for tag in tags %}
             <a href="{% url 'page_tag' with tag=tag.slug %}" class="list-group-item">
-                <h4 class="list-group-item-heading"><i class="fa fa-tag"></i> ${tag.name}</h4>
+                <h5 class="text-muted"><i class="fa fa-tag"></i> ${tag.name} <span class="pull-right text-muted">${len:tag.pages}</span></h5>
                 {%- if tag.description %}
                 {% markup tag.description as 'markdown' %}
                 {%- end-if %}

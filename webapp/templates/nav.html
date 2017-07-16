@@ -16,6 +16,7 @@
                 </div>
 
                 <div class="login">
+
                 {% if .user %}
                     <i class="fa fa-user"></i>
                     <a href="{% url 'user_edit' from 'moya.auth' %}" class="navbar-link">${.user.display_name}</a>&nbsp;
