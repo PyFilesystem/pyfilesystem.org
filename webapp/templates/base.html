@@ -60,6 +60,7 @@
 
         #toc
         {
+            max-width:60%;
             margin-left:10px;
             margin-bottom:10px;
         }
@@ -82,7 +83,6 @@
 
 <body>
 
-
     <div id="all">
         <header>
         {% include "/nav.html" %}
@@ -90,14 +90,10 @@
 
         <div id="content">
             <div class="container">
-
-            {%- if form %}
+            {%- block "body" %}
             <a href="/" style="width:200px;margin:auto;display:block;padding:20px 0px;">
                 {% insert 'img/logo.svg' fs 'media' %}
             </a>
-            {%- endif %}
-
-            {%- block "body" %}
             {% render sections.body %}
             {%- end %}
             </div>

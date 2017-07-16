@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{%- block "body" %}
+<a href="/" style="width:200px;margin:auto;display:block;padding:20px 0px;">
+    {% insert 'img/logo.svg' fs 'media' %}
+</a>
+{% render sections.main %}
+{%- end %}
