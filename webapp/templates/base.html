@@ -7,7 +7,11 @@
     <meta name="googlebot" content="index,follow,snippet,archive">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>${title}</title>
+    {%- if title %}
+    <title>${title} - PyFilesystem</title>
+    {%- else %}
+    <title>PyFilesystem</title>
+    {%- endif %}
 
     <meta name="keywords" content="">
 
@@ -17,14 +21,10 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
-    <!-- Css animations  -->
-    <!-- <link href="{% media '/universal/css/animate.css' %}" rel="stylesheet"> -->
 
-    <!-- Theme stylesheet, if possible do not edit this stylesheet -->
-    <link href="{% media '/universal/css/style.default.css' %}" rel="stylesheet" id="theme-stylesheet">
-
-    <!-- Custom stylesheet - for your changes -->
-    <link href="{% media '/universal/css/custom.css' %}" rel="stylesheet">
+    <style>
+    {% insert '/universal/css/style.default.css' fs 'media' %}
+    </style>
 
     <!-- Responsivity for older IE -->
     <!--[if lt IE 9]>
@@ -70,6 +70,52 @@
             margin-bottom:2em;
         }
 
+        article p
+        {
+            zoom:110%;
+        }
+
+
+        .hljs
+        {
+            padding:0px;
+        }
+
+.hljs{display:block;overflow-x:auto;padding:0.5em;color:#383a42;background:#fafafa}.hljs-comment,.hljs-quote{color:#a0a1a7;font-style:italic}.hljs-doctag,.hljs-keyword,.hljs-formula{color:#a626a4}.hljs-section,.hljs-name,.hljs-selector-tag,.hljs-deletion,.hljs-subst{color:#e45649}.hljs-literal{color:#0184bb}.hljs-string,.hljs-regexp,.hljs-addition,.hljs-attribute,.hljs-meta-string{color:#50a14f}.hljs-built_in,.hljs-class .hljs-title{color:#c18401}.hljs-attr,.hljs-variable,.hljs-template-variable,.hljs-type,.hljs-selector-class,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-number{color:#986801}.hljs-symbol,.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-title{color:#4078f2}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:bold}.hljs-link{text-decoration:underline}
+
+
+        pre
+        {
+            /*background: #fff;*/
+            overflow-x:auto;
+            border:none !important;
+            border-radius:0;
+            /*padding:2px;*/
+            margin-top:0px;
+            /*margin-bottom:16px;*/
+            font-size:13px;
+            box-sizing: border-box;
+            font-family:monospace;
+            box-shadow: none;
+            padding:0px;
+        }
+
+        pre code.hljs
+        {
+            /*background: #fff;*/
+            float:left;
+            min-width:100%;
+            display:inline-block;
+            white-space:pre;
+            font-family: Consolas, Monaco, Monospace, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, sans-serif;
+        }
+
+        pre code.hljs *
+        {
+            white-space:pre;
+        }
+
+
     </style>
 
     {% block "includecss" %}{% render include.css %}{% end %}
@@ -110,16 +156,45 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <!--
     <script src="{% media '/universal/js/jquery.cookie.js' %}"></script>
     <script src="{% media '/universal/js/waypoints.min.js' %}"></script>
     <script src="{% media '/universal/js/jquery.counterup.min.js' %}"></script>
     <script src="{% media '/universal/js/jquery.parallax-1.1.3.js' %}"></script>
     <script src="{% media '/universal/js/front.js' %}"></script>
-
+    -->
+    <script src="{% media '/js/highlight-pack-js' %}"></script>
 
     {% block "includejs" %}{% render include.js %}{% endblock %}
     {% block "js" %}{% render sections.js unique %}{% endblock %}
     {% block "jsfoot" %}{% render sections.jsfoot unique%}{% endblock %}
+
+    <script>
+function highlight_code($el)
+{
+    $el.find('code').each(function(i, el){
+        var $code = $(this);
+        var language_spec = $code.attr('class');
+        if (language_spec)
+        {
+            var language = language_spec.split('-')[1];
+            if (language)
+            {
+                $code.attr('class', language);
+                hljs.highlightBlock($code[0]);
+            }
+        }
+        else
+        {
+            /*$code.addClass('hljs');*/
+        }
+    });
+}
+$(document).ready(function(){
+    highlight_code($('pre'));
+});
+</script>
 
 
 </body>

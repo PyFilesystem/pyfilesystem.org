@@ -4,6 +4,10 @@
       xmlns:db="http://moyaproject.com/db"
       xmlns:forms="http://moyaproject.com/forms">
 
-    <!-- Views go here -->
+    <mountpoint name="main">
+        <url route="/">
+            <serve-template template="/front.html"/>
+        </url>
+    </mountpoint>
 
 </moya>
