@@ -5,9 +5,11 @@
       xmlns:forms="http://moyaproject.com/forms">
 
     <mountpoint name="main">
-        <url route="/">
-            <serve-template template="/front.html"/>
-        </url>
+        <url route="/" methods="GET" view="#view.front"/>
     </mountpoint>
+
+    <view libname="view.front" template="/front.html">
+        <db:query model="wiki#Tag" orderby="wiki#Tag.count" dst="tags"/>
+    </view>
 
 </moya>

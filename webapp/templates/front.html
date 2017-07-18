@@ -1,6 +1,137 @@
 {% extends '/base.html' %}
 
 {% block "body" %}
+<a href="https://github.com/pyfilesystem/pyfilesystem2"><img style="position: absolute; top: 44px; right: 0; border: 0; z-index: 1" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+
+        <div class="row">
+            <div class="col-md-12">
+{% markup-block as 'markdown' %}
+[![PyPI version](https://badge.fury.io/py/fs.svg)](https://badge.fury.io/py/fs)
+[![PyPI](https://img.shields.io/pypi/pyversions/fs.svg)](https://pypi.python.org/pypi/fs/)
+[![Build Status](https://travis-ci.org/PyFilesystem/pyfilesystem2.svg?branch=master)](https://travis-ci.org/PyFilesystem/pyfilesystem2)
+[![Coverage Status](https://coveralls.io/repos/github/PyFilesystem/pyfilesystem2/badge.svg)](https://coveralls.io/github/PyFilesystem/pyfilesystem2)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/30ad6445427349218425d93886ade9ee)](https://www.codacy.com/app/will-mcgugan/pyfilesystem2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PyFilesystem/pyfilesystem2&amp;utm_campaign=Badge_Grade)
+{% end %}
+            </div>
+        </div>
+    <div class="row">
+<h1>
+                <img style="width:100%;max-width:400px" src="{% media '/img/logo.svg' %}"/>
+            </h1>
+    </div>
+    <div class="row">
+        <div class="col-md-9">
+            <p class="lead">
+                <b>Filesystem Abstraction for Python.</b>
+                <br>
+                Work with files and directories in <em>archives</em>, <em>memory</em>, the <em>cloud</em> etc. as easily as your local drive.
+                Write code now, decide later where the data will be stored; unit test without writing real files; upload files to the cloud without learning a new API; sandbox your file writing code; etc.
+            </p>
+        </div>
+        <div class="col-md-3">
+
+
+            <h4 style="text-align: center;text-transform: uppercase;">
+                <a href="#">
+                    Installing
+                </a>
+            </h4>
+
+            <h4 style="text-align: center;text-transform: uppercase;">
+                <a href="#">
+                    Documentation
+                </a>
+            </h4>
+
+            <h4 style="text-align: center;text-transform: uppercase;">
+                <a href="#">
+                    Filesystem Index
+                </a>
+            </h4>
+
+            <h4 style="text-align: center;text-transform: uppercase;">
+                <a href="#">
+                   Support
+                </a>
+            </h4>
+
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-12">
+
+<article>
+{% markup-block as 'markdown' %}
+
+## Introduction
+
+Let's look at a simple use case. The following
+function uses the PyFilesystem API to count the number of non-blank
+lines of Python code in a directory. It works *recursively*, so it will
+find ``.py`` files in all sub-directories.
+
+```python
+def count_python_loc(fs):
+    """Count non-blank lines of Python code."""
+    count = 0
+    for path in fs.walk.files(filter=['*.py']):
+        with fs.open(path) as python_file:
+            count += sum(1 for line in python_file if line.strip())
+    return count
+```
+
+The above code can be made to work with any filesystem, here are just a few examples:
+
+
+
+```python
+# HD
+with open_fs('.') as fs:
+    print(count_python_loc(fs))
+```
+
+
+```python
+# Zip file
+with open_fs('zip://projects.zip') as fs:
+    print(count_python_loc(fs))
+```
+
+
+```python
+# FTP Server
+with open_fs('ftp://ftp.example.org/projects') as fs:
+    print(count_python_loc(fs))
+```
+
+
+Contrast that with the equivelent using just the standard library:
+
+```python
+def count_py_loc(path):
+    count = 0
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if name.endswith('.py'):
+                with open(os.path.join(root, name), 'rt') as python_file:
+                    count += sum(1 for line in python_file if line.strip())
+```
+
+This version will only work with the local OS filesystem. Any other
+filesystem would require a different API and likely re-implementing the
+functionality of `os.walk`.
+
+
+{% end %}
+</article>
+        </div>
+
+
+    </div>
 
 
 {% end-block %}
