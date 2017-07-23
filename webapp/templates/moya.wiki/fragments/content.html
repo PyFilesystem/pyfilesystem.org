@@ -1,0 +1,7 @@
+{%- cache for 1d key [page.updated_time, revision.updated_time] %}
+{%- extract replace html:(contents|'headingids'|'leadp') %}
+{%- markup-block as 'moya' set page=revision.page, revision=revision %}
+{%- markup revision.content|'wikimarkup' as revision.markup %}
+{%- /markup-block %}
+{%- /extract %}
+{%- /cache %}

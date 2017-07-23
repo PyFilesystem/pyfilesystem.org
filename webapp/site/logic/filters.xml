@@ -1,0 +1,11 @@
+<moya xmlns="http://moyaproject.com"
+    xmlns:soup="http://moyaproject.com/soup"
+    xmlns:let="http://moyaproject.com/let">
+
+    <filter name="leadp" value="html">
+        <doc>Add class="lead" to first paragraph</doc>
+        <soup:strain src="html" select="p" max="1" let:class="'lead'" dst="leadp"/>
+        <return value="html:leadp"/>
+    </filter>
+
+</moya>
