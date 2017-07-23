@@ -23,10 +23,8 @@ Create a JSONRPC interface which you can see on /jsonrpc/
         <rpc:method name="render_images" description="Render images for insertion">
             <rpc:parameter name="collection_uuid" type="string">UUID of collection</rpc:parameter>
             <rpc:parameter name="images" type="list">List of Image UUIDs</rpc:parameter>.
-
             <db:get model="moya.imagelib#Collection" let:uuid="collection_uuid" dst="collection"/>
             <rpc:error code="no_collection" if="not collection"/>
-
             <db:query model="moya.imagelib#Image" dst="images"
                 let:collection="collection" filter="moya.imagelib#Image.uuid in images"/>
             <return-dict>
@@ -65,7 +63,6 @@ Create a JSONRPC interface which you can see on /jsonrpc/
                     let:page="revision.page"
                     let:revision="revision"/>
             </return-dict>
-
         </rpc:method>
 
     </rpc:interface>

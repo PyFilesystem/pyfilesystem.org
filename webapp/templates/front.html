@@ -1,12 +1,137 @@
 {% extends '/base.html' %}
 
+
+{% block "css" -%}
+<style>{% minify 'css' -%}
+/*!
+ * "Fork me on GitHub" CSS ribbon v0.2.0 | MIT License
+ * https://github.com/simonwhitaker/github-fork-ribbon-css
+*/
+
+.github-fork-ribbon {
+  width: 12.1em;
+  height: 12.1em;
+  position: absolute;
+  overflow: hidden;
+  top: 44px;
+  right: 0;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 13px;
+  text-decoration: none;
+  text-indent: -999999px;
+}
+
+.github-fork-ribbon.fixed {
+  position: fixed;
+}
+
+.github-fork-ribbon:before, .github-fork-ribbon:after {
+  /* The right and left classes determine the side we attach our banner to */
+  position: absolute;
+  display: block;
+  width: 15.38em;
+  height: 1.54em;
+
+  top: 3.23em;
+  right: -3.23em;
+
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.github-fork-ribbon:before {
+  content: "";
+
+  /* Add a bit of padding to give some substance outside the "stitching" */
+  padding: .38em 0;
+
+  /* Set the base colour */
+  background-color: #090;
+
+  /* Set a gradient: transparent black at the top to almost-transparent black at the bottom */
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.15)));
+  background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+  background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+  background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+  background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));
+
+  /* Add a drop shadow */
+  -webkit-box-shadow: 0 .15em .23em 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 .15em .23em 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 .15em .23em 0 rgba(0, 0, 0, 0.5);
+
+  pointer-events: auto;
+}
+
+.github-fork-ribbon:after {
+  /* Set the text from the data-ribbon attribute */
+  content: attr(data-ribbon);
+
+  /* Set the text properties */
+  color: #fff;
+  font: 700 1em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.54em;
+  text-decoration: none;
+  text-shadow: 0 -.08em rgba(0, 0, 0, 0.5);
+  text-align: center;
+  text-indent: 0;
+
+  /* Set the layout properties */
+  padding: .15em 0;
+  margin: .15em 0;
+
+  /* Add "stitching" effect */
+  border-width: .08em 0;
+  border-style: dotted;
+  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.github-fork-ribbon.left-top, .github-fork-ribbon.left-bottom {
+  right: auto;
+  left: 0;
+}
+
+.github-fork-ribbon.left-bottom, .github-fork-ribbon.right-bottom {
+  top: auto;
+  bottom: 0;
+}
+
+.github-fork-ribbon.left-top:before, .github-fork-ribbon.left-top:after, .github-fork-ribbon.left-bottom:before, .github-fork-ribbon.left-bottom:after {
+  right: auto;
+  left: -3.23em;
+}
+
+.github-fork-ribbon.left-bottom:before, .github-fork-ribbon.left-bottom:after, .github-fork-ribbon.right-bottom:before, .github-fork-ribbon.right-bottom:after {
+  top: auto;
+  bottom: 3.23em;
+}
+
+.github-fork-ribbon.left-top:before, .github-fork-ribbon.left-top:after, .github-fork-ribbon.right-bottom:before, .github-fork-ribbon.right-bottom:after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+{%- end-minify %}
+</style>
+{%- end-block %}
+
 {% block "body" %}
-<a href="https://github.com/pyfilesystem/pyfilesystem2"><img style="position: absolute; top: 44px; right: 0; border: 0; z-index: 1" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
-
-
+<a class="github-fork-ribbon right-top" href="https://github.com/pyfilesystem/pyfilesystem2" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
         <div class="row">
             <div class="col-md-12">
-{% markup-block as 'markdown' %}
+{% markdown %}
 [![PyPI version](https://badge.fury.io/py/fs.svg)](https://badge.fury.io/py/fs)
 [![PyPI](https://img.shields.io/pypi/pyversions/fs.svg)](https://pypi.python.org/pypi/fs/)
 [![Build Status](https://travis-ci.org/PyFilesystem/pyfilesystem2.svg?branch=master)](https://travis-ci.org/PyFilesystem/pyfilesystem2)
@@ -23,56 +148,33 @@
     <div class="row">
         <div class="col-md-9">
             <p class="lead">
-                <b>Filesystem Abstraction for Python.</b>
+                <b>Open Source Filesystem Abstraction for Python.</b>
                 <br>
                 Work with files and directories in <em>archives</em>, <em>memory</em>, the <em>cloud</em> etc. as easily as your local drive.
                 Write code now, decide later where the data will be stored; unit test without writing real files; upload files to the cloud without learning a new API; sandbox your file writing code; etc.
             </p>
         </div>
         <div class="col-md-3">
-
-
-            <h4 style="text-align: center;text-transform: uppercase;">
-                <a href="#">
-                    Installing
+            {%- for page in promoted_pages %}
+            <h4 class="front-page-link">
+                <a href="{% url 'page' with slug=page.slug from 'moya.wiki' %}">
+                    ${page.title}
                 </a>
             </h4>
-
-            <h4 style="text-align: center;text-transform: uppercase;">
-                <a href="#">
-                    Documentation
-                </a>
-            </h4>
-
-            <h4 style="text-align: center;text-transform: uppercase;">
-                <a href="#">
-                    Filesystem Index
-                </a>
-            </h4>
-
-            <h4 style="text-align: center;text-transform: uppercase;">
-                <a href="#">
-                   Support
-                </a>
-            </h4>
-
-
+            {%- endfor %}
         </div>
     </div>
 
     <div class="row">
-
         <div class="col-md-12">
 
 <article>
-{% markup-block as 'markdown' %}
-
+{% markdown %}
 ## Introduction
 
-Let's look at a simple use case. The following
+Let's look at a simple use-case. The following
 function uses the PyFilesystem API to count the number of non-blank
-lines of Python code in a directory. It works *recursively*, so it will
-find ``.py`` files in all sub-directories.
+lines of Python code in a directory (and any subdirectories):
 
 ```python
 def count_python_loc(fs):
@@ -85,7 +187,6 @@ def count_python_loc(fs):
 ```
 
 The above code can be made to work with any filesystem, here are just a few examples:
-
 
 
 ```python
@@ -108,11 +209,11 @@ with open_fs('ftp://ftp.example.org/projects') as fs:
     print(count_python_loc(fs))
 ```
 
-
-Contrast that with the equivelent using just the standard library:
+Contrast that with the equivalent code using just the standard library:
 
 ```python
-def count_py_loc(path):
+def count_python_loc(path):
+    """Count non-blank lines of Python code."""
     count = 0
     for root, dirs, files in os.walk(path):
         for name in files:
@@ -121,17 +222,13 @@ def count_py_loc(path):
                     count += sum(1 for line in python_file if line.strip())
 ```
 
-This version will only work with the local OS filesystem. Any other
+This version will only work with the local drive. Any other
 filesystem would require a different API and likely re-implementing the
 functionality of `os.walk`.
-
-
-{% end %}
+{% end -%}
 </article>
+
         </div>
-
-
     </div>
-
 
 {% end-block %}

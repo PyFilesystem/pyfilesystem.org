@@ -1,9 +1,47 @@
 <moya xmlns="http://moyaproject.com"
       xmlns:links="http://moyaproject.com/links"
-      xmlns:html="http://moyaproject.com/html">
+      xmlns:html="http://moyaproject.com/html"
+      xmlns:w="http://moyaproject.com/widgets"
+      xmlns:wiki="http://moyaproject.com/wiki"
+      xmlns:db="http://moyaproject.com/db"
+      xmlns:let="http://moyaproject.com/let">
 
     <content libname="content.base">
         <links:get dst="navlinks" />
+        <db:query
+            model="wiki#Page"
+            dst="recent_pages"
+            orderby="updated_time"
+            maxresults="4" />
+          <db:query
+            model="wiki#Page"
+            dst="promoted_pages"
+            let:promoted="yes"
+            orderby="updated_time"
+            maxresults="4" />
+        <db:get
+            model="wiki#Tag"
+            let:slug="'news'"
+            dst="news"/>
+        <db:query
+            if="news"
+            model="wiki#Page"
+            src="news.pages"
+            dst="news_pages"
+            orderby="updated_time"
+            maxresults="4"/>
+    </content>
+
+    <content libname="content.front" template="/front.html"/>
+
+    <content libname="moya.wiki#content.search" extends="moya.wiki#content.base" template="search.html">
+        <title>Search</title>
+        <section name="main">
+            <scope-node template="search/header.html"/>
+            <w:paginate src="pages" dst="page">
+                <wiki:search-result page="page"/>
+            </w:paginate>
+        </section>
     </content>
 
 </moya>

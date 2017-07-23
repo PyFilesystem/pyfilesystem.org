@@ -6,6 +6,8 @@
     <command libname="cmd.init" synopsis="initialize wiki" init="yes">
         <json dst="perms">
         [
+            ["wiki-admin", "User may administrate Wiki pages"],
+            ["wiki-publish", "User may publish Wiki pages"],
             ["wiki-manage", "User may manage the Wiki"],
             ["wiki-create", "User may create Wiki pages"],
             ["wiki-edit", "User may edit Wiki pages"],

@@ -1,24 +1,15 @@
 <div id="top">
     <div class="container">
         <div class="row">
-
             <div class="col-xs-12">
                 <div class="pull-left login">
                     <a href="/"><img src="{% media '/icon.svg' %}" width="20px" style="margin-right:2px;margin-top:-4px"/> <span class="hidden-xs">PyFilesystem</span></a>
                 </div>
                 <div class="social">
-                    {#
-                    <a href="#" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
-                    <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
-                    #}
                     <a href="{% url 'feedback' from 'feedback' %}" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
                 </div>
-
                 <div class="login">
-
-
-                <a href="{% url 'page_search' from 'moya.wiki' %}" class="navbar-link"><i class="fa fa-search"></i><span>Search</span></a>
+                    <a href="{% url 'page_search' from 'moya.wiki' %}" class="navbar-link"><i class="fa fa-search"></i><span>Search</span></a>
                 {% if .user %}
                     <a href="{% url 'user_edit' from 'moya.auth' %}" class="navbar-link"><i class="fa fa-user"></i>${.user.display_name}</a>&nbsp;
                     <a href="${.urls.auth.logout}?fwd=${.request.path}" class="navbar-link"><i class="fa fa-sign-out"></i><span>Sign out</span></a>
@@ -26,7 +17,6 @@
                     <a href="${.urls.auth.login}?fwd=${.request.path}"><i class="fa fa-sign-in"></i>Sign in</span></a>
                 {% endif %}
                 </div>
-
             </div>
         </div>
     </div>

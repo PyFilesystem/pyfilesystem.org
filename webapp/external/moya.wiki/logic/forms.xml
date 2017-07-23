@@ -81,7 +81,7 @@
         <w:dialog>
             <m:md>Are you sure you want to *publish* wiki page **${.url.slug}**?</m:md>
             <html:p>
-                <input maxlength="100" name="comment" placeholder="Revision comment"/>
+                <input maxlength="100" name="comment" placeholder="Revision comment (optional)"/>
             </html:p>
             <w:dialog-buttons>
                 <submit-button visual="primary" name="publish" clicked="yes" text="Publish Page"/>
@@ -131,6 +131,10 @@
                 <submit-button visual="default" name="default" clicked="no" text="Cancel"/>
             </w:dialog-buttons>
         </w:dialog>
+    </form>
+
+    <form libname="form.search" style="basic" csrf="no" xmlns="http://moyaproject.com/forms" method="get">
+        <input maxlength="100" name="q" required="yes"/>
     </form>
 
 </moya>

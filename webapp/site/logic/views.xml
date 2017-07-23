@@ -8,8 +8,8 @@
         <url route="/" methods="GET" view="#view.front"/>
     </mountpoint>
 
-    <view libname="view.front" template="/front.html">
-        <db:query model="wiki#Tag" orderby="wiki#Tag.count" dst="tags"/>
+    <view libname="view.front" content="#content.front">
+
     </view>
 
 </moya>

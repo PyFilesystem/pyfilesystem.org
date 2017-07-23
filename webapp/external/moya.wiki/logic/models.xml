@@ -17,6 +17,7 @@
         <property name="edit_url" expression=".appurls.page.admin(slug=slug).page_edit"/>
         <property name="publish_url" expression=".appurls.page.admin(slug=slug).page_publish"/>
         <property name="count_images" expression="sumexp:[revisions,`len:images.images`]"/>
+        <property name="may_delete" expression="eval:.app.settings.delete_permission"/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Revision" repr="revision '${page.slug}' ${revision_label}">
@@ -34,6 +35,8 @@
         <text name="tagtext" null="no" default="" />
         <one-to-one name="images" model="moya.imagelib#Collection" null="yes" owner="yes" blank="yes"
             picker="moya.imagelib#admintable.collections"/>
+        <text name="comment" default=""/>
+
         <property name="is_draft" expression="isnone:version"/>
         <property name="revision_label" expression="is_draft ? sub:'${author.username}’s draft' : sub:'r${version}'"/>
         <property name="url">
@@ -56,12 +59,10 @@
             <m:return value="object.page.title"/>
         </property>
 
+        <property name="may_admin" expression="eval:.app.settings.admin_permission"/>
         <property name="may_manage" expression="eval:.app.settings.manage_permission"/>
         <property name="may_edit" expression="eval:.app.settings.edit_permission"/>
-        <property name="may_delete" expression="eval:.app.settings.delete_permission"/>
-
-        <text name="comment" default=""/>
-
+        <property name="may_publish" expression="eval:.app.settings.publish_permission"/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Tag" repr="${name}">

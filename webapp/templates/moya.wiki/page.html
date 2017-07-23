@@ -5,18 +5,6 @@
 <div class="row">
 
     <div class="col-md-9">
-        <div class="visible-xs visible-sm" style="width:100%;height:45px;">
-            <form action="{% url 'page_search' from 'wiki' %}"  style="float:right;width:220px;">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search site" name="q">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
-                        </span>
-                    </div>
-                </div>
-          </form>
-        </div>
 
         <div class="heading clear-both">
             <h1>${revision.title}</h1>
@@ -27,23 +15,13 @@
     </div>
 
     <div class="col-md-3">
-
-      <a href="/" class="hidden-xs hidden-sm" style="width:100%;margin:auto;padding:20px 0px;">
-       {% insert 'img/logo.svg' fs 'media' %}
-      </a>
-
-      <form action="{% url 'page_search' from 'wiki' %}" style="padding-top:1em;">
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search" name="q">
-                <span class="input-group-btn">
-                    <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
-                </span>
-            </div>
+        <div style="margin:10px 0px;">
+            <a href="/" class="hidden-xs hidden-sm">
+            {% insert 'img/logo.svg' fs 'media' %}
+            </a>
         </div>
-      </form>
 
-              <div class="list-group">
+        <div class="list-group">
             <dl class="list-group-item">
                 <dt>Author</dt>
                 <dd>${revision.author.display_name}</dd>
@@ -54,27 +32,23 @@
             </dl>
         </div>
 
-      <div class="panel panel-default sidebar-menu sidebar-menu">
-      <div class="panel-heading"><h5>Tags</h5></div>
-      <div class="panel-body">
-
-        <div class="tag-list">
-        {%- for tag in tags %}
-
-            <div class="tag-list-item">
-                <a href="{% url 'page_tag' with tag=tag.slug %}">
-                    <i class="fa fa-tag"></i> ${tag.name}
-                </a>
-
-                {% markup tag.description as 'markdown' %}
+        {% if tags %}
+        <div class="panel panel-default sidebar-menu sidebar-menu">
+            <div class="panel-heading"><h5>Tags</h5></div>
+            <div class="panel-body">
+                <div class="tag-list">
+                {%- for tag in tags %}
+                    <div class="tag-list-item">
+                        <a href="{% url 'page_tag' with tag=tag.slug %}">
+                            <i class="fa fa-tag"></i> ${tag.name}
+                        </a>
+                        {% markup tag.description as 'markdown' %}
+                    </div>
+                {%- end-for %}
+                </div>
             </div>
-
-        {%- end-for %}
         </div>
-
-    </div>
-    </div>
-
+        {% endif %}
 
 
     </div>

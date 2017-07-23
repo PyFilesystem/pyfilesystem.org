@@ -41,15 +41,18 @@
 
     <view libname="view.search" content="#content.search">
         <let q=".request.GET.q or ''"/>
-        <db:query
-            model="#Page"
-            filter="#Page.searchable and #Page.current.content_text icontains q"
-            orderby="#Page.title like q, #Page.title"
-            dst="pages"/>
-        <db:query
-            model="#Tag"
-            filter="#Tag.name ilike q"
-            dst="tags"/>
+        <forms:get form="#form.search" dst="form" bind=".request.GET"/>
+        <if test="q">
+            <db:query
+                model="#Page"
+                filter="#Page.searchable and #Page.current.content_text icontains q"
+                orderby="#Page.title like q, #Page.title"
+                dst="pages"/>
+            <db:query
+                model="#Tag"
+                filter="#Tag.name ilike q"
+                dst="tags"/>
+        </if>
     </view>
 
     <view libname="view.tag" content="#content.tag">
@@ -148,8 +151,9 @@
         </forms:validate>
     </view>
 
-    <view libname="view.page.delete" content="#content.page.delete" requires="eval:.app.settings.delete_permission">
+    <view libname="view.page.delete" content="#content.page.delete">
         <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
+        <forbidden if="not page.may_delete"/>
         <forms:get
             form="#form.page.delete"
             dst="form"
@@ -169,6 +173,8 @@
 
     <view libname="view.page.publish" content="#content.page.publish">
         <defer to="get_draft"/>
+        <forbidden if="not revision.may_publish"/>
+        <let may_publish="revision.may_admin or (revision.may_publish and page.author == .user)"/>
         <forms:get form="#form.page.publish" dst="form"
             let:page="page" let:revision="revision" let:page_url="page_url"/>
         <forms:validate src="form">

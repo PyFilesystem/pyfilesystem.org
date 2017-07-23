@@ -20,6 +20,7 @@
     <content libname="content.search" extends="#content.base" template="search.html">
         <title>Search</title>
         <section name="main">
+            <render src="form"/>
             <scope-node template="search/header.html"/>
             <w:paginate src="pages" dst="page">
                 <wiki:search-result page="page"/>
@@ -51,7 +52,7 @@
             <wiki:admin-panel if="page and revision.may_manage" page="page" revision="revision"/>
             <w:warning if="revision.is_draft and revision.author==.user">
                 <md>
-This is a *draft*, and is only visible to Wiki managers.
+This is your *draft*, and is only visible to Wiki managers.
 
 Use the admin panel to *publish* these changes.
                 </md>
@@ -87,10 +88,24 @@ Use the admin panel to *publish* these changes.
 
     <content libname="content.page.delete" extends="#content.page.form">
         <title>Delete ${page_url}</title>
+        <section name="main" if="not page.may_delete">
+            <w:warning><md>
+                **You do not have permission to delete this page.**
+
+                Contact admin for assistance.
+            </md></w:warning>
+        </section>
     </content>
 
     <content libname="content.page.publish" extends="#content.page.form">
         <title>Publish ${page_url}</title>
+        <section name="main" if="not may_publish">
+            <w:warning><md>
+                **You do not have permission to publish this page.**
+
+                Contact admin for assistance.
+            </md></w:warning>
+        </section>
     </content>
 
     <content libname="content.page.discard" extends="#content.page.form">

@@ -16,7 +16,7 @@
     <div class="btn-group">
     {% with editclass=revision.may_edit ? None : 'disabled' -%}
       {%- if revision.is_draft %}
-      <a {% attrib class=[editclass, 'btn btn-success'] %} href="{% url 'page_publish' with slug=page.slug %}">
+      <a {% attrib class=[editclass, revision.may_publish ? None : 'disabled', 'btn btn-success'] %} href="{% url 'page_publish' with slug=page.slug %}">
         <i class="glyphicon glyphicon-thumbs-up"></i> Publish
       </a>
       {%- endif %}
@@ -35,7 +35,7 @@
     </div>
 
     <div class="btn-group">
-      <a {% attrib class=[revision.may_delete ? None : 'disabled', 'btn btn-warning'] %} href="{% url 'page_delete' with slug=page.slug %}">
+      <a {% attrib class=[revision.page.may_delete ? None : 'disabled', 'btn btn-danger'] %} href="{% url 'page_delete' with slug=page.slug %}">
         <i class="glyphicon glyphicon-remove"></i> Delete
       </a>
       <a {% attrib class=[eval:.app.settings.create_permission ? None : 'disabled', 'btn btn-warning'] %} href="{% url 'page_new' %}">
