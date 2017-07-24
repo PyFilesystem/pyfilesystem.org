@@ -3,8 +3,26 @@
         <footer id="footer">
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-4">
-                        <h4>Information</h4>
+                    <div class="col-md-6">
+                        <h4>About</h4>
+                        <p>
+                            PyFilesystem runs on Python 2.7/3.X &mdash; Linux / Mac / Win
+                        </p>
+                        <p>
+                        Commercial <a href="{% url 'page' with slug='contact' from 'wiki' %}">support</a> available
+                        </p>
+
+                        {% markdown %}
+[![PyPI version](https://badge.fury.io/py/fs.svg)](https://badge.fury.io/py/fs)
+
+[![Coverage Status](https://coveralls.io/repos/github/PyFilesystem/pyfilesystem2/badge.svg)](https://coveralls.io/github/PyFilesystem/pyfilesystem2)
+{% /markdown %}
+
+                        <hr class="visible-xs visible-sm">
+                    </div>
+
+                    <div class="col-md-2">
+                        <h4>See Also</h4>
                         <div class="blog-entries">
                             {%- for page in promoted_pages %}
                             <div class="item">
@@ -16,9 +34,10 @@
                             </div>
                             {%- end-for %}
                         </div>
-                        <hr class="visible-xs">
+                        <hr class="visible-xs visible-sm">
                     </div>
-                    <div class="col-sm-4">
+
+                    <div class="col-md-2">
                         <h4>Recently Published</h4>
                         <div class="blog-entries">
                             {%- for page in recent_pages %}
@@ -31,8 +50,9 @@
                             </div>
                             {%- /for %}
                         </div>
+                        <hr class="visible-xs visible-sm">
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-md-2">
                         <h4>News</h4>
                         <div class="blog-entries">
                             {%- for page in news_pages %}
@@ -46,6 +66,7 @@
                             {%- /for %}
                         </div>
                     </div>
+
                 </div>
             </div>
         </footer>

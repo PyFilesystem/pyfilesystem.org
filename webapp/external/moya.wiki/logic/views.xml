@@ -39,20 +39,28 @@
         <url route="/reset" view="#view.page.reset" name="page_reset"/>
     </mountpoint>
 
+    <macro libname="macro.search">
+        <signature>
+            <argument name="q" required="yes" check="isstr:q"/>
+        </signature>
+        <return-dict if="not q"/>
+        <db:query
+            model="#Page"
+            filter="#Page.searchable and #Page.current.content_text icontains q"
+            orderby="#Page.title like q, #Page.title"
+            dst="pages"/>
+        <db:query
+            model="#Tag"
+            filter="#Tag.name ilike q"
+            dst="tags"/>
+        <return-scope values="q, pages, tags"/>
+    </macro>
+
     <view libname="view.search" content="#content.search">
-        <let q=".request.GET.q or ''"/>
         <forms:get form="#form.search" dst="form" bind=".request.GET"/>
-        <if test="q">
-            <db:query
-                model="#Page"
-                filter="#Page.searchable and #Page.current.content_text icontains q"
-                orderby="#Page.title like q, #Page.title"
-                dst="pages"/>
-            <db:query
-                model="#Tag"
-                filter="#Tag.name ilike q"
-                dst="tags"/>
-        </if>
+        <return>
+            <call macro="#macro.search" let:q=".request.GET.q or ''"/>
+        </return>
     </view>
 
     <view libname="view.tag" content="#content.tag">

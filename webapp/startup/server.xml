@@ -18,7 +18,6 @@
         <import py="moya.libs.forms"/>
         <import py="moya.libs.widgets"/>
 
-        <import py="moya.libs.feedback"/>
         <import py="moya.libs.jsonrpc"/>
         <import py="moya.libs.wysihtml5"/>
         <import py="moya.libs.recaptcha"/>
@@ -41,11 +40,9 @@
         <install name="bootstrap" lib="moya.twitter.bootstrap"/>
         <install name="links" lib="moya.links"/>
 
-        <install name="feedback" lib="moya.feedback" mount="/feedback/"/>
         <install name="jsonrpc" lib="moya.jsonrpc"/>
         <install name="wysihtml5" lib="moya.wysihtml5"/>
         <install name="recaptcha" lib="moya.google.recaptcha"/>
-
 
         <install name="wiki" lib="moya.wiki" mount="/"/>
 

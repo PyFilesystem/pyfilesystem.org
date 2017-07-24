@@ -13,7 +13,7 @@
             dst="recent_pages"
             orderby="updated_time"
             maxresults="4" />
-          <db:query
+        <db:query
             model="wiki#Page"
             dst="promoted_pages"
             let:promoted="yes"

@@ -13,7 +13,7 @@
         </article>
     </div>
 
-    {%- cache for 1d key [page.updated_time, revision.updated_time] %}
+    {%- cache for 1d key [page.id, revision.id, page.updated_time, revision.updated_time] %}
     <div class="col-md-3">
         <div style="margin:10px 0px;">
             <a href="/" class="hidden-xs hidden-sm">
@@ -44,7 +44,7 @@
                         </a>
                         {% markup tag.description as 'markdown' %}
                     </div>
-                {%- end-for %}
+                {%- /for %}
                 </div>
             </div>
         </div>
@@ -53,4 +53,4 @@
     </div>
     {% /cache %}
 </div>
-{% endblock %}
+{% /block %}

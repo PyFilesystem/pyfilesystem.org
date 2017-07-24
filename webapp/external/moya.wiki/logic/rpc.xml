@@ -65,6 +65,18 @@ Create a JSONRPC interface which you can see on /jsonrpc/
             </return-dict>
         </rpc:method>
 
+        <rpc:method name="search" description="Get search results">
+            <rpc:parameter name="q" type="string">Search Query</rpc:parameter>
+            <call macro="#macro.search" let:q="q" dst="results"/>
+            <unpack obj="results"/>
+            <render-content
+                content="#content.search.results"
+                dst="html"
+                let:pages="pages"
+                let:tags="tags"/>
+            <return-dict let:q="q" let:html="html"/>
+        </rpc:method>
+
     </rpc:interface>
 
 </moya>

@@ -5,7 +5,7 @@
     {% insert 'img/logo.svg' fs 'media' %}
 </a>
 
-<form action="{% url 'page_search' from 'wiki' %}" style="width:500px;padding-bottom:20px;max-width:100%;margin:auto;">
+<form id="search" action="{% url 'page_search' from 'wiki' %}" style="width:500px;padding-bottom:20px;max-width:100%;margin:auto;">
     <div class="form-group">
         <div class="input-group">
             <input type="text" value="${.request.GET.q}" class="form-control" placeholder="Search" name="q">
@@ -16,5 +16,62 @@
     </div>
 </form>
 
+<div id="results">
 {% render sections.main %}
+</div>
 {%- end %}
+
+
+{% block 'js' %}
+<script>
+{% minify 'js' %}
+$(function(){
+    search_cache = {}
+    var wiki_rpc = new JSONRPC('${.appurls.rpc}');
+    var $results =  $('#results');
+
+    function set_results(q, html)
+    {
+        $results.html(html);
+        if(q)
+        {
+            history.replaceState(null, null, 'search?q=' + q);
+        }
+        else
+        {
+            history.replaceState(null, null, 'search');
+        }
+    }
+
+    $('input[name=q]').keyup(function(e){
+
+        var $input = $(this);
+        var q = $input.val();
+        var rpc_url = $('input[name=wiki_rpc]').val();
+
+        if(search_cache[q])
+        {
+            var result = search_cache[q];
+            set_results(q, result.html);
+        }
+        else
+        {
+            wiki_rpc.call(
+                'search',
+                {
+                    q:q
+                },
+                function(result){
+                    search_cache[result.q] = result;
+                    if ($input.val() == result.q)
+                    {
+                        set_results(result.q, result.html);
+                    }
+                }
+            );
+        }
+    });
+});
+{% /minify %}
+</script>
+{% /block %}
