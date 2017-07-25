@@ -24,4 +24,10 @@
             <attribute name="page">Page object</attribute>
         </signature>
     </widget>
+
+    <widget name="tag" template="widgets/tag.html">
+        <signature>
+            <attribute name="tag">Tag object</attribute>
+        </signature>
+    </widget>
 </moya>

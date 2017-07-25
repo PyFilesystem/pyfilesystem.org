@@ -1,0 +1,7 @@
+
+<div class="tag-list-item">
+    <a href="{% url 'page_tag' with tag=tag.slug %}">
+        <i class="fa fa-tag"></i> ${tag.name}
+    </a>
+    {% markup tag.description as 'markdown' %}
+</div>

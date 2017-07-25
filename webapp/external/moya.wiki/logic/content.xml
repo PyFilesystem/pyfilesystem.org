@@ -21,19 +21,24 @@
         <title>Search</title>
         <section name="main">
             <render src="form"/>
-            <macro libname="macro.search.results">
+        </section>
+        <macro libname="macro.search.results">
+            <section name="results">
                 <scope-node template="search/header.html"/>
                 <w:paginate src="pages" dst="page">
                     <wiki:search-result page="page"/>
                 </w:paginate>
-            </macro>
-        </section>
+            </section>
+            <section name="tags">
+                <for src="tags" dst="tag">
+                    <wiki:tag tag="tag"/>
+                </for>
+            </section>
+        </macro>
     </content>
 
     <content libname="content.search.results" template="rpc/search.html" final="yes">
-        <section name="results">
-            <defer to="#macro.search.results"/>
-        </section>
+        <defer to="#macro.search.results"/>
     </content>
 
     <content libname="content.tag" extends="#content.search" template="tag.html">

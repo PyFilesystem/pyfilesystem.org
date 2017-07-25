@@ -44,15 +44,18 @@
             <argument name="q" required="yes" check="isstr:q"/>
         </signature>
         <return-dict if="not q"/>
+        <let slug="slug:q"/>
         <db:query
             model="#Page"
-            filter="#Page.searchable and #Page.current.content_text icontains q"
-            orderby="#Page.title like q, #Page.title"
+            filter="#Page.searchable and ((#Page.current.content_text icontains q) or (#Page.title icontains q))"
+            orderby="not (#Page.title == q), not (#Page.title ^= q), #Page.title"
             dst="pages"/>
         <db:query
             model="#Tag"
-            filter="#Tag.name ilike q"
-            dst="tags"/>
+            filter="#Tag.slug ^= slug"
+            dst="tags"
+            orderby="#Tag.name!=q, #Tag.slug"
+            maxresults="6"/>
         <return-scope values="q, pages, tags"/>
     </macro>
 

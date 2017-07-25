@@ -34,15 +34,5 @@
 
     <content libname="content.front" template="/front.html"/>
 
-    <content libname="moya.wiki#content.search" extends="moya.wiki#content.base" template="search.html">
-        <title>Search</title>
-        <section name="main">
-            <scope-node template="search/header.html"/>
-            <w:paginate src="pages" dst="page">
-                <wiki:search-result page="page"/>
-            </w:paginate>
-        </section>
-    </content>
-
 </moya>
 

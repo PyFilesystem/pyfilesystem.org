@@ -7,9 +7,6 @@
     <mountpoint name="main">
         <url route="/" methods="GET" view="#view.front"/>
     </mountpoint>
-
-    <view libname="view.front" content="#content.front">
-
-    </view>
+    <view libname="view.front" content="#content.front"/>
 
 </moya>
