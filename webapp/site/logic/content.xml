@@ -32,7 +32,9 @@
             maxresults="4"/>
     </content>
 
-    <content libname="content.front" template="/front.html"/>
+    <content libname="content.front" template="/front.html">
+        <title>PyFilesystem.org</title>
+    </content>
 
 </moya>
 
