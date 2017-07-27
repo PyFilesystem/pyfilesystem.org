@@ -8,7 +8,7 @@
 <form id="search" action="{% url 'page_search' from 'wiki' %}" style="width:500px;padding-bottom:20px;max-width:100%;margin:auto;">
     <div class="form-group">
         <div class="input-group">
-            <input type="text" value="${.request.GET.q}" class="form-control" placeholder="Search" name="q">
+            <input type="text" value="${.request.GET.q}" class="form-control" placeholder="Search" name="q" autofocus>
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
             </span>
