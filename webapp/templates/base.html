@@ -183,7 +183,7 @@
     {% block "jshead" %}{% render sections.jshead %}{% end %}
     {% block "head" %}{% render sections.head %}{% end %}
 
-    {% include "/fragments/favicon.html" %}
+    {% include "/fragments/favicon.html" from 'wiki' %}
 
 </head>
 
@@ -191,7 +191,7 @@
 
     <div id="all">
         <header>
-        {% include "/nav.html" %}
+        {% include "/nav.html" from 'wiki' %}
         </header>
 
         <div id="content">
@@ -204,7 +204,7 @@
             {%- /block %}
             </div>
         </div>
-        {% include "/footer.html" %}
+        {% include "/footer.html" from 'wiki' %}
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
