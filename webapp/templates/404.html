@@ -1,0 +1,32 @@
+{% extends 'base.html' from 'moya.wiki' %}
+
+{% block 'title' %}Not Found{% /block %}
+
+{% block 'body' %}
+
+<a href="/" style="width:200px;margin:auto;display:block;padding:20px 0px;">
+    {% insert 'img/logo.svg' fs 'media' %}
+</a>
+
+<h1 class="text-center">Not Found</h1>
+
+<p class="text-center lead">
+    That page was not found on the server. It may have been removed or have never existed.
+</p>
+
+<p class="text-center lead">
+    Why not try a search for the missing page?
+</p>
+
+<form id="search" action="{% url 'page_search' from 'wiki' %}" style="width:500px;padding-bottom:20px;max-width:100%;margin:auto;">
+    <div class="form-group">
+        <div class="input-group">
+            <input type="text" value="${last:pathsplit:.request.path}" class="form-control" placeholder="Search" name="q" autofocus>
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-template-main"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</form>
+
+{% /block %}
