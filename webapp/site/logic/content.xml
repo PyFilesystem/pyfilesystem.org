@@ -7,17 +7,17 @@
       xmlns:let="http://moyaproject.com/let">
 
     <content libname="content.base">
-        <links:get dst="navlinks" />
+        <!-- <links:get dst="navlinks" /> -->
         <db:query
             model="wiki#Page"
             dst="recent_pages"
-            orderby="updated_time"
+            orderby="-updated_time"
             maxresults="4" />
         <db:query
             model="wiki#Page"
             dst="promoted_pages"
             let:promoted="yes"
-            orderby="updated_time"
+            orderby="title"
             maxresults="4" />
         <db:get
             model="wiki#Tag"
@@ -28,7 +28,7 @@
             model="wiki#Page"
             src="news.pages"
             dst="news_pages"
-            orderby="updated_time"
+            orderby="-updated_time"
             maxresults="4"/>
     </content>
 
