@@ -5,8 +5,13 @@
       xmlns:forms="http://moyaproject.com/forms">
 
     <mountpoint name="main">
-        <url route="/" methods="GET" view="#view.front"/>
+        <url route="/{*}.php" methods="*">
+            <!-- Shortcut to 404 for php URLs -->
+            <serve-text status="not_found">No PHP here</serve-text>
+        </url>
+        <url route="/" methods="GET">
+            <serve-content content="#content.front"/>
+        </url>
     </mountpoint>
-    <view libname="view.front" content="#content.front"/>
 
 </moya>
