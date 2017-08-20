@@ -6,7 +6,9 @@
       xmlns:wiki="http://moyaproject.com/wiki">
 
     <mountpoint name="main">
-        <!-- A simple default view to start you off -->
+        <url route="/{*}" handler="forbidden">
+            <serve-content content="#content.forbidden" if=".user"/>
+        </url>
         <url route="/" view="#view.page" name="page_front"/>
         <url route="/jsonrpc" view="#jsonrpc.interface" name="rpc"/>
         <url route="/new" view="#view.page.new" name="page_new"/>
@@ -18,7 +20,9 @@
     <mountpoint libname="mountpoint.page">
         <url route="/{slug:slug}/" view="#view.page" name="page"/>
         <url route="/{slug:slug}.{integer:version}/" view="#view.page" name="page_version"/>
-        <url route="/{slug:slug}/drafts/{username}/" view="#view.page" name="page_draft"/>
+        <url route="/{slug:slug}/drafts/" mount="#mountpoint.draft">
+            <forbidden if="not .user"/>
+        </url>
         <url route="/{slug:slug}/" mount="#mountpoint.page.actions" name="admin">
             <forbidden if="not eval:.app.settings.edit_permission"/>
         </url>
@@ -27,16 +31,27 @@
         </url>
     </mountpoint>
 
+    <mountpoint libname="mountpoint.draft">
+        <url route="/{username}/" view="#view.page" name="page_draft"/>
+        <url route="/{username}/publish" view="#view.draft.publish" name="draft_publish"/>
+        <url route="/{username}/edit" view="#view.draft.edit" name="draft_edit"/>
+        <url route="/{username}/discard" view="#view.draft.discard" name="draft_discard" />
+        <url route="/{username}/reset" view="#view.draft.reset" name="draft_reset" />
+    </mountpoint>
+
     <mountpoint libname="mountpoint.revision.actions">
         <url route="/make-default" view="#view.page.default" name="page_default"/>
     </mountpoint>
 
     <mountpoint libname="mountpoint.page.actions">
-        <url route="/edit" view="#view.page.edit" name="page_edit"/>
+        <url route="/edit" name="page_edit">
+            <forbidden if="not .user"/>
+            <redirect
+                name="draft_edit"
+                let:username=".user.username"
+                let:slug=".url.slug"/>
+        </url>
         <url route="/delete" view="#view.page.delete" name="page_delete"/>
-        <url route="/publish" view="#view.page.publish" name="page_publish"/>
-        <url route="/discard" view="#view.page.discard" name="page_discard"/>
-        <url route="/reset" view="#view.page.reset" name="page_reset"/>
     </mountpoint>
 
     <macro libname="macro.search">
@@ -111,6 +126,7 @@
             content="#content.page.missing"
             status="NOT_FOUND"
             let:slug="slug"/>
+        <not-found if="not revision.published and not permission:'wiki-manage'"/>
         <db:query
             model="#Tag"
             src="page.tags"
@@ -127,11 +143,11 @@
                 dst="page"
                 title="title"
                 slug="slug:title"/>
-            <redirect name="page_edit" let:slug="page.slug"/>
+            <redirect name="draft_edit" let:username=".user.username" let:slug="page.slug"/>
         </forms:validate>
     </view>
 
-    <view libname="view.page.edit" content="#content.page.edit">
+    <view libname="view.draft.edit" content="#content.draft.edit">
         <db:get model="#Page" let:slug=".url.slug" dst="page"/>
         <redirect name="page_create" let:slug=".url.slug" if="not page"/>
         <wiki:create-draft page="page" base="page.current" dst="revision"/>
@@ -145,19 +161,19 @@
             <forms:apply src="form" dst="revision"/>
             <switch on="form.data.action">
                 <case>publish</case>
-                <redirect name="page_publish" let:slug="page.slug"/>
+                <redirect name="draft_publish" let:username=".url.username" let:slug="page.slug"/>
 
                 <case>save</case>
                 <redirect-to url="${revision.url}"/>
 
                 <case>discard</case>
-                <redirect name="page_discard" let:slug="page.slug"/>
+                <redirect name="draft_discard" let:username=".url.username" let:slug="page.slug"/>
 
                 <case>reset</case>
-                <redirect name="page_reset" let:slug="page.slug"/>
+                <redirect name="draft_reset" let:username=".url.username" let:slug="page.slug"/>
 
                 <default-case/>
-                <redirect name="page_edit" let:slug="page.slug"/>
+                <redirect name="draft_edit" let:username=".url.username" let:slug="page.slug"/>
             </switch>
         </forms:validate>
     </view>
@@ -178,44 +194,48 @@
 
     <macro docname="get_draft">
         <db:get-required model="#Page" let:slug=".url.slug" dst="page"/>
-        <db:get-required model="#Revision" let:page="page" let:version="None" dst="revision"/>
+        <db:get-required
+            model="#Revision"
+            filter="#Revision.author.username==.url.username"
+            let:page="page"
+            let:version="None"
+            dst="revision" />
         <get-url name="page" let:slug=".url.slug" dst="page_url"/>
     </macro>
 
-    <view libname="view.page.publish" content="#content.page.publish">
+    <view libname="view.draft.publish" content="#content.draft.publish">
         <defer to="get_draft"/>
-        <forbidden if="not revision.may_publish"/>
-        <let may_publish="revision.may_admin or (revision.may_publish and page.author == .user)"/>
+        <let may_publish="revision.may_admin or (revision.may_publish and page.is_owner)"/>
         <forms:get form="#form.page.publish" dst="form"
             let:page="page" let:revision="revision" let:page_url="page_url"/>
         <forms:validate src="form">
             <let publish="form.data.publish=='yes'"/>
-            <redirect name="page_edit" let:slug="page.slug" if="not publish"/>
+            <redirect name="page_edit" let:username=".url.username" let:slug="page.slug" if="not publish"/>
             <let revision.comment="form.data.comment"/>
             <wiki:publish page="page" revision="revision"/>
             <redirect-to url="${revision.url}"/>
         </forms:validate>
     </view>
 
-    <view libname="view.page.discard" content="#content.page.discard">
+    <view libname="view.draft.discard" content="#content.draft.discard">
         <defer to="get_draft"/>
         <forms:get form="#form.page.discard" dst="form"
             let:page="page" let:revision="revision" let:page_url="page_url"/>
         <forms:validate src="form">
             <let discard="form.data.discard=='yes'"/>
-            <redirect name="page_edit" let:slug="page.slug" if="not discard"/>
+            <redirect name="page_edit" let:username=".url.username" let:slug="page.slug" if="not discard"/>
             <db:delete src="revision"/>
             <redirect name="page" let:slug=".url.slug"/>
         </forms:validate>
     </view>
 
-    <view libname="view.page.reset" content="#content.page.reset">
+    <view libname="view.draft.reset" content="#content.draft.reset">
         <defer to="get_draft"/>
         <forms:get form="#form.page.reset" dst="form"
             let:page="page" let:revision="revision" let:page_url="page_url"/>
         <forms:validate src="form">
             <let reset="form.data.reset=='yes'"/>
-            <redirect name="page_edit" let:slug="page.slug" if="not reset"/>
+            <redirect name="page_edit" let:username=".url.username" let:slug="page.slug" if="not reset"/>
             <db:get-required
                 model="#Revision"
                 dst="base"
@@ -223,7 +243,7 @@
                 let:version="form.data.version"/>
             <db:delete src="revision"/>
             <wiki:create-draft page="page" base="base" dst="revision"/>
-            <redirect name="page_edit" let:slug=".url.slug"/>
+            <redirect name="page_edit" let:username=".url.username" let:slug=".url.slug"/>
         </forms:validate>
     </view>
 

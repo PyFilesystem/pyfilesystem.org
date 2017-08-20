@@ -2,6 +2,32 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
+
+                {%- if .user %}
+                <div class="btn-group moya-admin-menu pull-left">
+                {% spaceless %}
+                  <button class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" href="#" title="Admin menu">
+                    <i class="glyphicon glyphicon-wrench"></i>
+                  </button>
+                {% / %}
+                  <ul class="dropdown-menu">
+                    {%- for renderable in sections.admin_links %}
+                    {%- if renderable.url -%}
+                    <li>{% render renderable %}</li>
+                    {%- else %}
+                    <li class="divider"/>
+                    {%- endif %}
+                    {%- endfor %}
+                    {% if .apps.admin %}
+                    {%- if sections.admin_links %}
+                    <li class="divider"/>
+                    {%- endif %}
+                    <li><a href="{% url 'front' from 'admin' %}">Moya Admin</a></li>
+                    {% endif %}
+                  </ul>
+                </div>
+            {%- endif %}
+
                 <div class="pull-left login">
                     <a href="/"><img src="{% media '/icon.svg' from 'wiki' %}" width="20px" style="margin-right:2px;margin-top:-4px"/> <span class="hidden-xs">PyFilesystem</span></a>
                 </div>

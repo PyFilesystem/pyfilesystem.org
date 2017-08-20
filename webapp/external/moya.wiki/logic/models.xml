@@ -14,10 +14,11 @@
         <boolean name="promoted" default="no"/>
         <boolean name="locked" default="no"/>
         <property name="url" expression=".appurls.page.page(slug=slug)"/>
-        <property name="edit_url" expression=".appurls.page.admin(slug=slug).page_edit"/>
-        <property name="publish_url" expression=".appurls.page.admin(slug=slug).page_publish"/>
+        <property name="edit_url" expression=".appurls.page.admin(slug=slug).draft_edit"/>
+        <property name="publish_url" expression=".appurls.page.admin(slug=slug).draft_publish"/>
         <property name="count_images" expression="sumexp:[revisions,`len:images.images`]"/>
         <property name="may_delete" expression="eval:.app.settings.delete_permission"/>
+        <property name="is_owner" expression="author==.user"/>
     </model>
 
     <model xmlns="http://moyaproject.com/db" libname="Revision" repr="revision '${page.slug}' ${revision_label}">

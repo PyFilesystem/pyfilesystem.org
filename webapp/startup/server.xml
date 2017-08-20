@@ -44,7 +44,7 @@
         <install name="wysihtml5" lib="moya.wysihtml5"/>
         <install name="recaptcha" lib="moya.google.recaptcha"/>
 
-        <install name="wiki" lib="moya.wiki" mount="/"/>
+        <install name="wiki" lib="moya.wiki" mount="/" urlpriority="10"/>
 
         <install name="thumbnail" lib="moya.thumbnail"/>
         <install name="uploads" lib="moya.static" mount="/uploads/"/>

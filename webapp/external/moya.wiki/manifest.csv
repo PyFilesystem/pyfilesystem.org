@@ -1,19 +1,19 @@
 "path","md5","auth md5"
 "/__init__.py",e54925e1ed3818adfd6c00bffa62f89d,07f2dead3bac69c65db162b2f4aba71c
-"/lib.ini",2c396af5059e1aa81185881f359077e7,3d9fb5a4e313e0985fcabdf653bda7ea
+"/lib.ini",6acf25ce19b3d87dac78d527c90242ba,6c6b728ae169f5f1c861cb0704252f5d
 "/locale/readme.txt",06c4fce01453459edb43d2857ebcc873,c44a09c4f28517782589988dd758c62e
-"/logic/admin.xml",c85cde7b5e8009295f8b42fd5e484b6d,3f76787dc70eee0217c5b9d2f85c9281
+"/logic/admin.xml",f050ff8ee9022dfadec539569553e991,bafce501ac8557df3ddde024ca92ddba
 "/logic/commands.xml",9ef6626de478f882576a4111385c87bc,8d13c512aacee10f82c5ecf9388f6f53
-"/logic/content.xml",25591f15086f9dc6ef889478ed9fc165,1d33a821fb04896439caa57423da120c
-"/logic/forms.xml",e77133d4d3ad97399195ce73e4ee7175,2b45c97c8386686f3a653e437233b9ba
+"/logic/content.xml",3a1fdaa245ca70bdb2e18b96ecf1b2fe,89460ec3f7d827b29919878f693c0d9b
+"/logic/forms.xml",a53522c8b66e8b14ff4457f0728e3453,ee48a1ba7c860987989b99651862b943
 "/logic/inserts.xml",d00c765a55930ed0bae1fda9bbe9e3c4,1db9a8bd48615b9a37d09e219d128662
-"/logic/models.xml",9768b3d2c03ac932bdc376443bc1b30e,41f680427b1ca2f44d2372993dedebfe
-"/logic/readme.txt",c9b6ae3a72d38bce525f828d88a29f78,6c8d877e335ec732a80091f9f7990aa9
+"/logic/models.xml",0aa51f0937da4badae888d9f693ad6d2,893ca38b797c6800690ecef2ab2bc185
+"/logic/preflight.xml",f63e3a98f81e4fc502e203115a151dec,ebc9f3219c2379566b4e819c484ea98c
 "/logic/rpc.xml",5e61adf12cecd614b1def528ba1f0d2f,de12cada2066c4462ffefb95e28b9573
 "/logic/signals.xml",8388a801db201e7f7ed3b555abad8fc3,e78a1200e4e72f0a758ea841f0255896
-"/logic/tags.xml",a251b059c78dac74b319f21d33060117,61e9665ebd03276bae9a3f03dba12f9b
+"/logic/tags.xml",7106e8371c25f5a581a0460ae259d8d3,879dae04d178cd8c303f4e18645e624c
 "/logic/thumbs.xml",90d606b4589c9c7d5e7fa84f0ca56f0b,ff2653eeb6869f323a082c5c045c682f
-"/logic/views.xml",2a6952aee2005a4672b1d73278015172,82eaf0bde61dcbb0991d4864ab3e9464
+"/logic/views.xml",1cf5cda1be60046ac92f20d94fa6d12c,831c90a2dddeda839d6b889a7dd0e87a
 "/logic/widgets.xml",57014cf6f051f66236a4976583c472e3,149e1c4c027209047fbf86ce63627a23
 "/media/css/draft.css",5054896d04be23035549306cacf59cdb,9e6e0f10b1784a30a113962cc1cb4fd5
 "/media/css/wiki.css",bfe94c7c1d62d81894a3a6d0317ab864,117b627f7d1b6f3207ccb78340105ae6
@@ -38,7 +38,7 @@
 "/templates/moya.wiki/search/header.html",c9399fa5232811723ead18790a12aede,757d4ade7658a4c770f19043901e0467
 "/templates/moya.wiki/tag.html",8f4bc4472d69cf97c2591487d9966dcc,d11999b12090b47c081e70fd5fae8e4e
 "/templates/moya.wiki/tag/header.html",6e725dafcc7cfce56ec0bd4a0657a031,ba41875930067bca64ff48642939d609
-"/templates/moya.wiki/widgets/admin-panel.html",a4245cc6c2fcaf6116871a6bc85a176d,c3de135bde104b9f2f796bfc74261af7
+"/templates/moya.wiki/widgets/admin-panel.html",c824abbc3fff521c038543aa6702cec5,e79fae65a3527dd85bccaa28d0f8a272
 "/templates/moya.wiki/widgets/readme.txt",3dbbc17a918596cb8b229d7d55bb33b9,e155f352f63950a54b4ac0bfa6bd35a8
 "/templates/moya.wiki/widgets/revision.html",2f4169fa26ad87c2995478fe888bf0a7,237ae26ef6cc40811af4ee6d18362210
 "/templates/moya.wiki/widgets/search_result.html",f48b3f4561628b49d8750f24b5d87521,7dd075aa93992eda64496c14d34c5d78

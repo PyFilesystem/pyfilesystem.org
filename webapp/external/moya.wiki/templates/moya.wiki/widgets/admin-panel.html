@@ -16,11 +16,11 @@
     <div class="btn-group">
     {% with editclass=revision.may_edit ? None : 'disabled' -%}
       {%- if revision.is_draft %}
-      <a {% attrib class=[editclass, revision.may_publish ? None : 'disabled', 'btn btn-success'] %} href="{% url 'page_publish' with slug=page.slug %}">
+      <a {% attrib class=[editclass, revision.may_publish ? None : 'disabled', 'btn btn-success'] %} href="{% url 'draft_publish' with username=.user.username, slug=page.slug %}">
         <i class="glyphicon glyphicon-thumbs-up"></i> Publish
       </a>
       {%- endif %}
-      <a {% attrib class=[editclass, 'btn btn-primary'] %} href="{% url 'page_edit' with slug=page.slug %}">
+      <a {% attrib class=[editclass, 'btn btn-primary'] %} href="{% url 'draft_edit' with username=.user.username, slug=page.slug %}">
         <i class="glyphicon glyphicon-pencil"></i> Edit
       </a>
       </div>

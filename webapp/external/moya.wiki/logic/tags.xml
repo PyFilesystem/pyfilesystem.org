@@ -25,13 +25,13 @@
             <db:create
                 model="#Revision"
                 dst="revision"
-                let:published="yes"
+                let:published="no"
                 let:markup=".app.settings.default_markup"
                 let:content="initial_content"
                 let:page="page"
                 let:version="0"
                 let:author=".user"
-                let:published_time=".now"
+                let:published_time="None"
                 let:updated_time=".now"/>
             <db:create
                 model="moya.imagelib#Collection"

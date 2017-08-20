@@ -37,7 +37,8 @@
         </field>
         <field>
             <actions>
-                <submit-button visual="success" name="action" clicked="publish" text="Publish"/>
+                <!-- disabled="not (revision.may_publish or revision.may_admin)" -->
+                <submit-button visual="success" name="action" clicked="publish" text="Publish" />
                 <submit-button visual="warning" name="action" clicked="discard" text="Discard"/>
                 <submit-button visual="warning" name="action" clicked="reset" text="Reset"/>
                 <w:button-link target="_blank" visual="default" name="page_draft" let:username=".user.username" let:slug="page.slug">View</w:button-link>
@@ -86,6 +87,7 @@
             <w:dialog-buttons>
                 <submit-button visual="primary" name="publish" clicked="yes" text="Publish Page"/>
                 <submit-button visual="default" name="publish" clicked="no" text="Cancel"/>
+                <w:button-link target="_blank" visual="default" name="page_draft" let:username=".user.username" let:slug="page.slug">View</w:button-link>
             </w:dialog-buttons>
         </w:dialog>
     </form>

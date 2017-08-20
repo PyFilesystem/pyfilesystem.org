@@ -15,6 +15,21 @@
         <include-css path="css/wiki.css"/>
         <section name="main">
         </section>
+        <section name="admin_links" merge="append" if="permission:'wiki-manage'">
+            <w:link icon="plus" name="page_new">New Page</w:link>
+        </section>
+    </content>
+
+    <content libname="content.forbidden" extends="#content.base">
+        <section name="main">
+            <w:warning><md>
+    **You do not have sufficient permissions for this page.**
+            </md></w:warning>
+            <md>
+    Email **[${.app.settings.admin_email}](mailto:${.app.settings.admin_email}?${urlencode:subject='permission request', body=.request.path_url})**
+    to request the required permissions.
+            </md>
+        </section>
     </content>
 
     <content libname="content.search" extends="#content.base" template="search.html">
@@ -102,30 +117,31 @@ Use the admin panel to *publish* these changes.
     <content libname="content.page.delete" extends="#content.page.form">
         <title>Delete ${page_url}</title>
         <section name="main" if="not page.may_delete">
-            <w:warning><md>
-                **You do not have permission to delete this page.**
+            <w:info><md>
+                **You don't have permission to delete this page.**
 
-                Contact admin for assistance.
-            </md></w:warning>
+                Contact [admin](mailto:${.app.settings.admin_email}) to request delete permissions.
+            </md></w:info>
         </section>
     </content>
 
-    <content libname="content.page.publish" extends="#content.page.form">
+    <content libname="content.draft.publish" extends="#content.page.form">
         <title>Publish ${page_url}</title>
         <section name="main" if="not may_publish">
-            <w:warning><md>
-                **You do not have permission to publish this page.**
-
-                Contact admin for assistance.
-            </md></w:warning>
+            <w:info>
+                <md>**You don't have permission to publish this page.**</md>
+            </w:info>
+            <md>
+                Contact [admin](mailto:${.app.settings.admin_email}?subject=${.request.path_url}) to request publish permissions.
+            </md>
         </section>
     </content>
 
-    <content libname="content.page.discard" extends="#content.page.form">
+    <content libname="content.draft.discard" extends="#content.page.form">
         <title>Publish ${page_url}</title>
     </content>
 
-    <content libname="content.page.reset" extends="#content.page.form">
+    <content libname="content.draft.reset" extends="#content.page.form">
         <title>Reset Draft</title>
     </content>
 
@@ -133,7 +149,7 @@ Use the admin panel to *publish* these changes.
         <title>Make ${revision.version} default</title>
     </content>
 
-    <content libname="content.page.edit" extends="#content.base" template="editor.html">
+    <content libname="content.draft.edit" extends="#content.base" template="editor.html">
         <title>Edit ${revision.page.title}</title>
         <include-css path="css/draft.css"/>
         <include-js path="js/wiki.js"/>

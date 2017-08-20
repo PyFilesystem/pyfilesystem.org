@@ -5,7 +5,6 @@
       xmlns:admin="http://moyaproject.com/admin"
       xmlns:html="http://moyaproject.com/html">
 
-
     <admin:module xmlns="http://moyaproject.com/admin"
         slug="moya-wiki" title="Wiki" description="Manage your Wiki">
         <link to="#admintable.pages"/>
@@ -44,6 +43,5 @@
         <column title="Name" link="yes" sort="name">${object.name}</column>
         <column title="Count" sort="count">${object.count}</column>
     </table>
-
 
 </moya>
