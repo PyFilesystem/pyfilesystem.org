@@ -2,10 +2,9 @@
 
     <!-- Initialize a server -->
     <server docname="main">
-
-        <import location="external/moya.widgets.extra"/>
-        <import location="external/moya.imagelib"/>
-        <import location="external/moya.wiki"/>
+        <import lib="moya.widgets.extra"/>
+        <import lib="moya.imagelib"/>
+        <import lib="moya.wiki"/>
 
         <import py="moya.libs.debug" if=".debug"/>
         <import py="moya.libs.diagnostics" if="not .debug"/>
@@ -17,10 +16,8 @@
         <import py="moya.libs.bootstrap"/>
         <import py="moya.libs.forms"/>
         <import py="moya.libs.widgets"/>
-
         <import py="moya.libs.jsonrpc"/>
         <import py="moya.libs.wysihtml5"/>
-        <import py="moya.libs.recaptcha"/>
         <import py="moya.libs.thumbnail"/>
 
         <!-- The 'site' library, for non reusable content -->
@@ -39,17 +36,12 @@
         <install name="diagnostics" lib="moya.diagnostics" if="not .debug"/>
         <install name="bootstrap" lib="moya.twitter.bootstrap"/>
         <install name="links" lib="moya.links"/>
-
         <install name="jsonrpc" lib="moya.jsonrpc"/>
         <install name="wysihtml5" lib="moya.wysihtml5"/>
-        <install name="recaptcha" lib="moya.google.recaptcha"/>
-
         <install name="wiki" lib="moya.wiki" mount="/" urlpriority="10"/>
-
         <install name="thumbnail" lib="moya.thumbnail"/>
         <install name="uploads" lib="moya.static" mount="/uploads/"/>
         <install name="imagelib" lib="moya.imagelib" mount="/imagelib/"/>
-        <install name="widgetsextra" lib="moya.widgets.extra"/>
-</server>
+    </server>
 
 </moya>

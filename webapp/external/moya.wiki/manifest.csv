@@ -1,10 +1,10 @@
 "path","md5","auth md5"
 "/__init__.py",e54925e1ed3818adfd6c00bffa62f89d,07f2dead3bac69c65db162b2f4aba71c
-"/lib.ini",6acf25ce19b3d87dac78d527c90242ba,6c6b728ae169f5f1c861cb0704252f5d
+"/lib.ini",a1cce2ac98eba673f6e71961a4ff31e0,11e6dc7524984763f9a73bfcb963cf6b
 "/locale/readme.txt",06c4fce01453459edb43d2857ebcc873,c44a09c4f28517782589988dd758c62e
 "/logic/admin.xml",f050ff8ee9022dfadec539569553e991,bafce501ac8557df3ddde024ca92ddba
 "/logic/commands.xml",9ef6626de478f882576a4111385c87bc,8d13c512aacee10f82c5ecf9388f6f53
-"/logic/content.xml",3a1fdaa245ca70bdb2e18b96ecf1b2fe,89460ec3f7d827b29919878f693c0d9b
+"/logic/content.xml",0fbac18967727b451861354888ba1577,2c4ae7a00159c3e5c81be18af5c23ede
 "/logic/forms.xml",a53522c8b66e8b14ff4457f0728e3453,ee48a1ba7c860987989b99651862b943
 "/logic/inserts.xml",d00c765a55930ed0bae1fda9bbe9e3c4,1db9a8bd48615b9a37d09e219d128662
 "/logic/models.xml",0aa51f0937da4badae888d9f693ad6d2,893ca38b797c6800690ecef2ab2bc185

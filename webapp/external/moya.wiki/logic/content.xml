@@ -40,7 +40,7 @@
         <macro libname="macro.search.results">
             <section name="results">
                 <scope-node template="search/header.html"/>
-                <w:paginate src="pages" dst="page">
+                <w:paginate src="pages" dst="page" query="q=q, page=page or request.GET.page">
                     <wiki:search-result page="page"/>
                 </w:paginate>
             </section>

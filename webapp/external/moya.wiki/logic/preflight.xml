@@ -1,0 +1,9 @@
+<moya xmlns:preflight="http://moyaproject.com/preflight">
+
+    <preflight:check>
+        <preflight:fail if="not .app.settings.admin_email">
+            Value required for admin_email in [settings:${.app.name}]
+        </preflight:fail>
+    </preflight:check>
+
+</moya>
