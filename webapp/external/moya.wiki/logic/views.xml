@@ -62,7 +62,7 @@
         <let slug="slug:q"/>
         <db:query
             model="#Page"
-            filter="#Page.searchable and #Page.current.published ((#Page.current.content_text icontains q) or (#Page.title icontains q))"
+            filter="#Page.searchable and #Page.current.published and ((#Page.current.content_text icontains q) or (#Page.title icontains q))"
             orderby="not (#Page.title == q), not (#Page.title ^= q), #Page.title"
             dst="pages"/>
         <db:query
