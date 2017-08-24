@@ -1,4 +1,4 @@
-{%- cache for 1m %}
+{%- cache for 10m if not .user %}
     <div class="footer-container">
         <footer id="footer">
             <div class="container">
@@ -7,12 +7,9 @@
                         <p>
                             <b>PyFilesystem</b> runs on Python 2.7/3.X &mdash; Linux / Mac / Win
                         </p>
-
-                        {% markdown %}
+{% markdown %}
 [![PyPI version](https://badge.fury.io/py/fs.svg)](https://badge.fury.io/py/fs)
-
 {% /markdown %}
-
                         <hr class="visible-xs visible-sm">
                     </div>
 
@@ -65,7 +62,6 @@
                 </div>
             </div>
         </footer>
-
 
         <div id="copyright">
             <div class="container">

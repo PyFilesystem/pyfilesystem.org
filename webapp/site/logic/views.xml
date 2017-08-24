@@ -5,6 +5,12 @@
       xmlns:forms="http://moyaproject.com/forms">
 
     <mountpoint name="main">
+        <url handler="not_found" route="/{*}">
+            <serve-content content="#content.404"/>
+        </url>
+          <url handler="internal_error" route="/{*}">
+            <serve-content content="#content.404"/>
+        </url>
         <url route="/{*}.php" methods="*">
             <!-- Shortcut to 404 for php URLs -->
             <serve-text status="not_found">No PHP here</serve-text>

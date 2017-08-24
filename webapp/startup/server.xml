@@ -5,43 +5,43 @@
         <import lib="moya.widgets.extra"/>
         <import lib="moya.imagelib"/>
         <import lib="moya.wiki"/>
-
-        <import py="moya.libs.debug" if=".debug"/>
-        <import py="moya.libs.diagnostics" if="not .debug"/>
-        <import py="moya.libs.auth"/>
-        <import py="moya.libs.session"/>
-        <import py="moya.libs.admin"/>
-        <import py="moya.libs.static"/>
-        <import py="moya.libs.links"/>
-        <import py="moya.libs.bootstrap"/>
-        <import py="moya.libs.forms"/>
-        <import py="moya.libs.widgets"/>
-        <import py="moya.libs.jsonrpc"/>
-        <import py="moya.libs.wysihtml5"/>
-        <import py="moya.libs.thumbnail"/>
+        <import lib="moya.debug" if=".debug"/>
+        <import lib="moya.diagnostics" if="not .debug"/>
+        <import lib="moya.auth"/>
+        <import lib="moya.session"/>
+        <import lib="moya.admin"/>
+        <import lib="moya.static"/>
+        <import lib="moya.links"/>
+        <import lib="moya.twitter.bootstrap"/>
+        <import lib="moya.forms"/>
+        <import lib="moya.widgets"/>
+        <import lib="moya.jsonrpc"/>
+        <import lib="moya.wysihtml5"/>
+        <import lib="moya.thumbnail"/>
 
         <!-- The 'site' library, for non reusable content -->
         <import location="./site" priority="10"/>
-        <install name="site" lib="site.pyfilesystem" mount="/" urlpriority="20"/>
+        <install lib="site.pyfilesystem" name="site" mount="/" urlpriority="20"/>
 
         <!-- Install applications (instances of a library) -->
-        <install name="forms" lib="moya.forms"/>
-        <install name="widgets" lib="moya.widgets"/>
-        <install name="auth" lib="moya.auth" mount="/auth/"/>
+        <install lib="moya.forms" name="forms"/>
+        <install lib="moya.widgets" name="widgets"/>
+        <install lib="moya.auth" name="auth" mount="/auth/"/>
+        <install lib="moya.session" name="session" mount="/"/>
+        <install lib="moya.admin" name="admin" mount="/admin/"/>
+        <install lib="moya.static" name="media" mount="/static/"/>
+        <install lib="moya.debug" name="debug" mount="/debug/" if=".debug"/>
+        <install lib="moya.diagnostics" name="diagnostics" if="not .debug"/>
+        <install lib="moya.twitter.bootstrap" name="bootstrap"/>
+        <install lib="moya.links" name="links"/>
+        <install lib="moya.jsonrpc" name="jsonrpc"/>
+        <install lib="moya.wysihtml5" name="wysihtml5"/>
+        <install lib="moya.wiki" name="wiki" mount="/" urlpriority="10"/>
+        <install lib="moya.thumbnail" name="thumbnail"/>
+        <install lib="moya.static" name="uploads" mount="/uploads/"/>
+        <install lib="moya.imagelib" name="imagelib" mount="/imagelib/"/>
+
         <mount app="auth" mountpoint="middleware" url="/"/>
-        <install name="session" lib="moya.session" mount="/"/>
-        <install name="admin" lib="moya.admin" mount="/admin/"/>
-        <install name="media" lib="moya.static" mount="/static/"/>
-        <install name="debug" lib="moya.debug" mount="/debug/" if=".debug"/>
-        <install name="diagnostics" lib="moya.diagnostics" if="not .debug"/>
-        <install name="bootstrap" lib="moya.twitter.bootstrap"/>
-        <install name="links" lib="moya.links"/>
-        <install name="jsonrpc" lib="moya.jsonrpc"/>
-        <install name="wysihtml5" lib="moya.wysihtml5"/>
-        <install name="wiki" lib="moya.wiki" mount="/" urlpriority="10"/>
-        <install name="thumbnail" lib="moya.thumbnail"/>
-        <install name="uploads" lib="moya.static" mount="/uploads/"/>
-        <install name="imagelib" lib="moya.imagelib" mount="/imagelib/"/>
     </server>
 
 </moya>
